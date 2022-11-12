@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coalba">
         <activity
-            android:name=".WorkHistoryActivity"
-            android:exported="true">
+            android:name=".WorkspaceHomeActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,19 +19,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".WorkHistoryActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
             android:name=".ProfileModifyActivity"
             android:exported="true" />
         <activity
             android:name=".ProfileRegisterActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

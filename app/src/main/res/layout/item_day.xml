@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_day"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:gravity="center"
+    android:layout_margin="5dp">
+
+    <!-- 달력에서 각 일을 보여주는 GridRecyclerView 항목의 레이아웃으로서 textview 하나로 구성 -->
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11"
+        android:textSize="12sp"/>
+</LinearLayout>

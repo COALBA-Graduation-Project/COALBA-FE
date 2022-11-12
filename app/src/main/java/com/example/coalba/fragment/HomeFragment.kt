@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coalba.adapter.WeekCalendarAdapter
 import com.example.coalba.data.response.ResponseWeekCalendarData
@@ -46,6 +47,10 @@ class HomeFragment : Fragment() {
         // recyclerview orientation (가로 방향 스크롤 설정)
         mLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         calendarList.layoutManager = mLayoutManager
+
+        // PagerSnapHelper()를 설정함으로써 한 항목씩 스크롤이 되도록 만들 수 있다.
+        val snap = PagerSnapHelper()
+        snap.attachToRecyclerView(binding.rvHomeWeek)
 
         setListView()
         AndroidThreeTen.init(context)
