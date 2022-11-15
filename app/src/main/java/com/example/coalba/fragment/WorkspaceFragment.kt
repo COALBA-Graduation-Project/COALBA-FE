@@ -6,18 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.coalba.R
+import com.example.coalba.adapter.AlbaListAdapter
+import com.example.coalba.data.response.AlbalistData
+import com.example.coalba.databinding.FragmentMessageBinding
+import com.example.coalba.databinding.FragmentWorkspaceBinding
 
 class WorkspaceFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var binding: FragmentWorkspaceBinding
+    lateinit var albaListAdapter: AlbaListAdapter
+    val datas = mutableListOf<AlbalistData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_workspace, container, false)
+        binding = FragmentWorkspaceBinding.inflate(inflater, container, false)
+        initRecycler()
+        return binding.root
+    }
+    private fun initRecycler(){
+        albaListAdapter = AlbaListAdapter(requireContext())
+        binding.rvAlbalist.adapter = albaListAdapter
+
+        datas.apply{
+            add(AlbalistData(name = "송이커피 숙대점"))
+            add(AlbalistData(name = "송이마라탕 숙대점"))
+            add(AlbalistData(name = "송송마카롱 숙대점"))
+
+            albaListAdapter.datas=datas
+            albaListAdapter.notifyDataSetChanged()
+        }
     }
 }
