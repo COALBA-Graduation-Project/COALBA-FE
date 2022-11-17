@@ -25,6 +25,7 @@ class MessageFragment : Fragment() {
         initRecycler()
         return binding.root
     }
+
     private fun initRecycler(){
         albaListAdapter = AlbaListAdapter(requireContext())
         binding.rvAlbalist.adapter = albaListAdapter
