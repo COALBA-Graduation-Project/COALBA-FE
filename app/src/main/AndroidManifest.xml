@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coalba">
         <activity
-            android:name=".MessageSendActivity"
-            android:exported="true">
+            android:name=".SubstituteActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,13 +19,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MessageDetailActivity"
-            android:exported="true"></activity>
-        <activity
-            android:name=".WorkspaceHomeActivity"
+            android:name=".MessageSendActivity"
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".MessageDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".WorkspaceHomeActivity"
+            android:exported="true"></activity>
         <activity
             android:name=".WorkHistoryActivity"
             android:exported="true" />
@@ -40,7 +43,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
