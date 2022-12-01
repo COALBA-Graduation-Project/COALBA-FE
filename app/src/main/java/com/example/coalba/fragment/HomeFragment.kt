@@ -8,7 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.coalba.adapter.AlbaListAdapter
+import com.example.coalba.adapter.HomeSchduleAdapter
 import com.example.coalba.adapter.WeekCalendarAdapter
+import com.example.coalba.data.response.AlbalistData
+import com.example.coalba.data.response.HomeScheduleData
 import com.example.coalba.data.response.ResponseWeekCalendarData
 import com.example.coalba.databinding.FragmentHomeBinding
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -18,8 +22,6 @@ import org.threeten.bp.Month
 import org.threeten.bp.format.DateTimeFormatter.ofPattern
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.TemporalAdjusters.lastDayOfMonth
-import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalAdjusters
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -33,6 +35,9 @@ class HomeFragment : Fragment() {
     lateinit var calendarList: RecyclerView
     lateinit var mLayoutManager: LinearLayoutManager
     var monthNum: String = ""
+
+    lateinit var homescheduleAdapter: HomeSchduleAdapter
+    val datas = mutableListOf<HomeScheduleData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +59,7 @@ class HomeFragment : Fragment() {
 
         setListView()
         AndroidThreeTen.init(context)
+        initRecycler()
         return root
     }
     // list(날짜, 요일)를 만들고, adapter를 등록하는 메소드
@@ -107,5 +113,19 @@ class HomeFragment : Fragment() {
             itemList.add(ResponseWeekCalendarData(dayOfWeek.toString().substring(0, 3), i.toString()))
         }
         calendarList.adapter = listAdapter
+    }
+
+
+    private fun initRecycler(){
+        homescheduleAdapter = HomeSchduleAdapter(requireContext())
+        binding.rvHomeSchedule.adapter = homescheduleAdapter
+
+        datas.apply{
+            add(HomeScheduleData(workname = "송이커피 숙대점", starttime = "12:00", endtime = "15:00", state = "알바중"))
+            add(HomeScheduleData(workname = "송이마라탕 숙대점", starttime = "16:00", endtime = "18:00", state = "알바전"))
+            add(HomeScheduleData(workname = "송송마카롱 숙대점", starttime = "19:00", endtime = "22:00", state = "알바전"))
+            homescheduleAdapter.datas=datas
+            homescheduleAdapter.notifyDataSetChanged()
+        }
     }
 }
