@@ -18,6 +18,9 @@
     <string name="starttime_ex">16:00</string>
     <string name="endtime_ex">21:00</string>
     <string name="request_message">요청메시지</string>
+    <string name="request_check">요청 확인</string>
     <string name="substitute_state">수락</string>
+    <string name="substitute_request">대타근무 요청</string>
+    <string name="substitute_name">대타 근무자</string>
     <string name="substitute_detail">대타근무 요청 상세</string>
 </resources>

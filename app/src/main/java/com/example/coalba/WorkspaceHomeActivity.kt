@@ -1,11 +1,13 @@
 package com.example.coalba
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.coalba.adapter.MonthAdapter
 import com.example.coalba.adapter.ScheduleAdapter
+import com.example.coalba.data.response.AlbalistData
 import com.example.coalba.data.response.ScheduleData
 import com.example.coalba.databinding.ActivityWorkspaceHomeBinding
 
@@ -38,6 +40,17 @@ class WorkspaceHomeActivity : AppCompatActivity() {
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.rvWorkspacehome)
         initRecycler()
+
+        val data = intent.getParcelableExtra<AlbalistData>("data")
+        binding.tvWorkspacehome.text = data!!.name
+
+        binding.ivWorkspacehomeChange.setOnClickListener {
+            val intent = Intent(this, SubstituteRequestActivity::class.java)
+            startActivity(intent)
+        }
+        binding.ivWorkspacehomeBack.setOnClickListener {
+            finish()
+        }
     }
     private fun initRecycler(){
         scheduleAdapter = ScheduleAdapter(this)
