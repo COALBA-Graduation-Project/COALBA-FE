@@ -1,6 +1,7 @@
 package com.example.coalba.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coalba.R
+import com.example.coalba.SubstituteDetailActivity
 import com.example.coalba.data.response.SubstituteData
+import com.example.coalba.databinding.ItemSubstituteBinding
 
 class SubstituteAdapter(private val context: Context) : RecyclerView.Adapter<SubstituteAdapter.ViewHolder>() {
     var datas = mutableListOf<SubstituteData>()
@@ -44,6 +47,14 @@ class SubstituteAdapter(private val context: Context) : RecyclerView.Adapter<Sub
             txtStarttime.text = item.starttime
             txtEndtime.text = item.endtime
             txtState.text = item.state
+
+            itemView.setOnClickListener {
+                Intent(context, SubstituteDetailActivity::class.java).apply {
+                    putExtra("data", item)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }.run { context.startActivity(this) }
+            }
+
         }
     }
 }
