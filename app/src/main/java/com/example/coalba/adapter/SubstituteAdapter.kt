@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.example.coalba.R
 import com.example.coalba.SubstituteDetailActivity
 import com.example.coalba.data.response.SubstituteData
-import com.example.coalba.databinding.ItemSubstituteBinding
 
 class SubstituteAdapter(private val context: Context) : RecyclerView.Adapter<SubstituteAdapter.ViewHolder>() {
     var datas = mutableListOf<SubstituteData>()

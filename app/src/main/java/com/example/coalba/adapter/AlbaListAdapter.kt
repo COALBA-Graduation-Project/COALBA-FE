@@ -1,12 +1,14 @@
 package com.example.coalba.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coalba.R
+import com.example.coalba.WorkspaceHomeActivity
 import com.example.coalba.data.response.AlbalistData
 
 class AlbaListAdapter(private val context: Context): RecyclerView.Adapter<AlbaListAdapter.ViewHolder>() {
@@ -26,6 +28,13 @@ class AlbaListAdapter(private val context: Context): RecyclerView.Adapter<AlbaLi
 
         fun bind(item:AlbalistData){
             txtName.text = item.name
+
+            itemView.setOnClickListener {
+                Intent(context, WorkspaceHomeActivity::class.java).apply {
+                    putExtra("data", item)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }.run { context.startActivity(this) }
+            }
         }
     }
 }
