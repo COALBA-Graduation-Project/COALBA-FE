@@ -20,7 +20,7 @@
         android:id="@+id/tv_message_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="송이커피 숙대점"
+        android:text="@string/place_ex"
         android:textColor="@color/black"
         android:textSize="21sp"
         android:textStyle="bold"

@@ -20,7 +20,7 @@
         android:id="@+id/tv_schedule_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="신지연"
+        android:text="@string/name_ex"
         android:textColor="@color/black"
         android:textSize="17sp"
         android:layout_marginStart="12dp"
