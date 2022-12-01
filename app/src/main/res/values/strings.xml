@@ -14,9 +14,9 @@
     </string-array>
     <string name="name_ex">조예진</string>
     <string name="place_ex">송이커피 숙대점</string>
-    <string name="date_ex">9/23</string>
-    <string name="starttime_ex">17:00</string>
-    <string name="endtime_ex">22:00</string>
+    <string name="date_ex">10/30</string>
+    <string name="starttime_ex">16:00</string>
+    <string name="endtime_ex">21:00</string>
     <string name="request_message">요청메시지</string>
     <string name="substitute_state">수락</string>
     <string name="substitute_detail">대타근무 요청 상세</string>

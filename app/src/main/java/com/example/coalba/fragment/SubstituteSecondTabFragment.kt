@@ -30,6 +30,7 @@ class SubstituteSecondTabFragment : Fragment() {
         binding.rvSubstitute.adapter = substituteAdapter
 
         datas.apply{
+
             add(SubstituteData(img = R.drawable.girl, name = "김다은", workname = "송이마라탕 숙대점", date = "11/03", starttime = "12:00", endtime = "20:00", state = "수락"))
             add(SubstituteData(img = R.drawable.girl, name = "조예진", workname = "송이커피 숙대점", date = "10/28", starttime = "15:00", endtime = "19:00", state = "수락"))
             add(SubstituteData(img = R.drawable.girl, name = "신지연", workname = "송이커피 숙대점", date = "10/10", starttime = "18:00", endtime = "22:00", state = "수락"))

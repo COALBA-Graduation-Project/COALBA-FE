@@ -18,6 +18,9 @@ class SubstituteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViewPager()
+        binding.ivSubstituteBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initViewPager() {
