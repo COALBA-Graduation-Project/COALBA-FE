@@ -1,5 +1,6 @@
 package com.example.coalba
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.coalba.adapter.MessageAdapter
@@ -20,6 +21,13 @@ class MessageDetailActivity : AppCompatActivity() {
         mBinding = ActivityMessageDetailBinding.inflate(layoutInflater)
         initRecycler()
         setContentView(binding.root)
+        binding.ivMessageBack.setOnClickListener {
+            finish()
+        }
+        binding.ivMessage.setOnClickListener {
+            val intent = Intent(this, MessageSendActivity::class.java)
+            startActivity(intent)
+        }
     }
     private fun initRecycler(){
         messageAdapter = MessageAdapter(this)

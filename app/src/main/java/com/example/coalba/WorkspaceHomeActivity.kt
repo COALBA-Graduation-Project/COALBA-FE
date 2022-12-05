@@ -51,6 +51,10 @@ class WorkspaceHomeActivity : AppCompatActivity() {
         binding.ivWorkspacehomeBack.setOnClickListener {
             finish()
         }
+        binding.ivWorkspacehomeMessagebox.setOnClickListener {
+            val intent = Intent(this, MessageDetailActivity::class.java)
+            startActivity(intent)
+        }
     }
     private fun initRecycler(){
         scheduleAdapter = ScheduleAdapter(this)
