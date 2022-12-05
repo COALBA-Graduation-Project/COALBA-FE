@@ -32,6 +32,10 @@ class WorkHistoryActivity : AppCompatActivity() {
         binding.spinWorkhistory.adapter = adapter
 
         initRecycler()
+
+        binding.ivWorkhistoryBack.setOnClickListener {
+            finish()
+        }
     }
     private fun initRecycler(){
         workhistoryAdapter = WorkHistoryAdapter(this)

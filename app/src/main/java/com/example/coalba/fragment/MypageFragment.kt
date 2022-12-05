@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.coalba.ProfileModifyActivity
 import com.example.coalba.R
 import com.example.coalba.SubstituteActivity
+import com.example.coalba.WorkHistoryActivity
 import com.example.coalba.databinding.FragmentMypageBinding
 
 class MypageFragment : Fragment() {
@@ -25,8 +27,18 @@ class MypageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.tvMypageManage1.setOnClickListener {
+            val intent = Intent(requireContext(), WorkHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.tvMypageManage2.setOnClickListener {
             val intent = Intent(requireContext(), SubstituteActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnMypage.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileModifyActivity::class.java)
             startActivity(intent)
         }
         super.onViewCreated(view, savedInstanceState)

@@ -16,5 +16,9 @@ class MessageSendActivity : AppCompatActivity() {
         // 바인딩
         mBinding = ActivityMessageSendBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.ivMessageBack.setOnClickListener {
+            finish()
+        }
     }
 }
