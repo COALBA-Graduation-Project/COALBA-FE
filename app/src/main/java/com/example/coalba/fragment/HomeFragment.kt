@@ -57,8 +57,8 @@ class HomeFragment : Fragment() {
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.rvHomeWeek)
 
-        setListView()
         AndroidThreeTen.init(context)
+        setListView()
         initRecycler()
         return root
     }
