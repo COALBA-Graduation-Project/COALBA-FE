@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.coalba.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.item_home_schedule.*
 import org.altbeacon.beacon.*
 
 class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
@@ -76,24 +75,6 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
         //===== 권한 요청 끝 =====
 
         //===== beacon 코드 시작 =====
-        btn_home_schedule_come.setOnClickListener {
-            bluetoothAdapter?.let {
-                if (!it.isEnabled) { //블루투스 비활성화 상태
-                    val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                    activityResultLauncher.launch(intent)
-                }
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                locationManager.let { //위치 GPS 비활성화 상태 (android 12 미만에는 GPS 필요X)
-                    if (!it.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                        activityResultLauncher.launch(intent)
-                    }
-                }
-            }
-            beaconManager!!.bindInternal(this) //→ onBeaconServiceConnect() 메소드 호출
-        }
-
         beaconManager = BeaconManager.getInstanceForApplication(this)
         //iBeacon용 Layout 설정 (설정해야지 해당 비콘 인식 가능)
         beaconManager!!.beaconParsers.add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"))
@@ -108,6 +89,24 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
         //===== beacon 코드 시작 =====
         beaconManager!!.unbindInternal(this)
         //===== beacon 코드 끝 =====
+    }
+
+    fun detectBeacon() {
+        bluetoothAdapter?.let {
+            if (!it.isEnabled) { //블루투스 비활성화 상태
+                val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                activityResultLauncher.launch(intent)
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            locationManager.let { //위치 GPS 비활성화 상태 (android 12 미만에는 GPS 필요X)
+                if (!it.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    activityResultLauncher.launch(intent)
+                }
+            }
+        }
+        beaconManager!!.bindInternal(this) //→ onBeaconServiceConnect() 메소드 호출
     }
 
     //===== beacon 코드 시작 =====
@@ -126,6 +125,7 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
 
             override fun didExitRegion(p0: Region?) {
                 //beacon 감지X
+                beaconManager!!.unbindInternal(this@MainActivity)
             }
 
             override fun didDetermineStateForRegion(p0: Int, p1: Region?) {
