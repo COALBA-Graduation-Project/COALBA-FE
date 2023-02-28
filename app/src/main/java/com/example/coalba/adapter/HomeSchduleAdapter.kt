@@ -1,12 +1,10 @@
 package com.example.coalba.adapter
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coalba.R
+import com.example.coalba.*
 import com.example.coalba.data.response.HomeScheduleData
 
 class HomeSchduleAdapter(private val context: Context) : RecyclerView.Adapter<HomeSchduleAdapter.ViewHolder>() {
@@ -30,12 +28,16 @@ class HomeSchduleAdapter(private val context: Context) : RecyclerView.Adapter<Ho
         private val txtStarttime: TextView = itemView.findViewById(R.id.tv_home_schedule_starttime)
         private val txtEndtime: TextView = itemView.findViewById(R.id.tv_home_schedule_endtime)
         private val txtState: TextView = itemView.findViewById(R.id.tv_home_schedule_state)
+        private val btnScheduleCome: Button = itemView.findViewById(R.id.btn_home_schedule_come)
 
         fun bind(item: HomeScheduleData){
             txtWorkname.text = item.workname
             txtStarttime.text = item.starttime
             txtEndtime.text = item.endtime
             txtState.text = item.state
+            btnScheduleCome.setOnClickListener {
+                (context as MainActivity).detectBeacon()
+            }
         }
     }
 }
