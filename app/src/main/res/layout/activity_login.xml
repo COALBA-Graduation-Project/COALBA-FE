@@ -27,13 +27,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_login_logo"/>
 
-    <com.navercorp.nid.oauth.view.NidOAuthLoginButton
-        android:id="@+id/naver_loginbtn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google_loginbtn"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

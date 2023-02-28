@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.coalba.api.jwt.CoalbaApplication
@@ -21,13 +20,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.OAuthLoginCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.coalba.BuildConfig
-import com.navercorp.nid.NaverIdLoginSDK.oauthLoginCallback
 
 class LoginActivity : AppCompatActivity() {
     // 전역 변수로 바인딩 객체 선언
@@ -46,9 +41,6 @@ class LoginActivity : AppCompatActivity() {
         // 구글 로그인
         initForGoogleLogin()
         binding.googleLoginbtn.setOnClickListener { googleLogin() }
-        // 네이버 로그인
-        initForNaverLogin()
-        binding.naverLoginbtn.setOAuthLogin(oauthLoginCallback!!)
     }
     private fun initForGoogleLogin() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -118,49 +110,9 @@ class LoginActivity : AppCompatActivity() {
         authResultLauncher.launch(signInIntent)
     }
 
-    // 네이버 로그인
-    private fun initForNaverLogin() {
-        val naver_client_id: String = BuildConfig.NAVER_CLIENT_ID
-        val naver_client_secret: String = BuildConfig.NAVER_CLIENT_SECRET
-        val naver_client_name = "COALBA"
-        NaverIdLoginSDK.initialize(this, naver_client_id, naver_client_secret, naver_client_name)
-
-        val oauthLoginCallback = object : OAuthLoginCallback {
-            override fun onSuccess() {
-                // 네이버 로그인 인증이 성공했을 때 수행할 코드 추가
-                // 네이버는 기본적으로 access_token, refresh_token 매번 모두 바로 발급됨
-                val accessToken: String? = NaverIdLoginSDK.getAccessToken()
-                val refreshToken: String? = NaverIdLoginSDK.getRefreshToken()
-                // 자동 로그인 방지하려면 밑에 코드 사용해야 함
-                // NaverIdLoginSDK.logout()
-                if (CoalbaApplication.prefs.accessToken == null && CoalbaApplication.prefs.refreshToken == null){
-                    login("NAVER", accessToken, refreshToken) //백 서버 로그인
-                }
-                else{
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                }
-
-                // binding.tvExpires.text = NaverIdLoginSDK.getExpiresAt().toString()
-                // binding.tvType.text = NaverIdLoginSDK.getTokenType()
-                // binding.tvState.text = NaverIdLoginSDK.getState().toString()
-            }
-            override fun onFailure(httpStatus: Int, message: String) {
-                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
-                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(this@LoginActivity,"errorCode:$errorCode, errorDesc:$errorDescription",Toast.LENGTH_SHORT).show()
-            }
-            override fun onError(errorCode: Int, message: String) {
-                onFailure(errorCode, message)
-            }
-        }
-
-        NaverIdLoginSDK.authenticate(this, oauthLoginCallback)
-    }
-
     // 처음 로그인해서 백 서버에게 토큰 값을 받아야 할 경우
     fun login(provider: String, accessToken: String?, refreshToken: String?) {
-        RetrofitManager.authService?.login(provider, "BOSS", AuthRequestData(accessToken!!, refreshToken!!))
+        RetrofitManager.authService?.login(provider, "STAFF", AuthRequestData(accessToken!!, refreshToken!!))
             ?.enqueue(object : Callback<AuthResponseData> {
                 override fun onResponse(
                     call: Call<AuthResponseData>,
