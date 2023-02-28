@@ -34,6 +34,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (CoalbaApplication.prefs.accessToken != null && CoalbaApplication.prefs.refreshToken != null) {
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            finish()
+            startActivity(intent)
+        }
+
         // 바인딩
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -42,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
         initForGoogleLogin()
         binding.googleLoginbtn.setOnClickListener { googleLogin() }
     }
+
     private fun initForGoogleLogin() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestScopes(Scope("https://www.googleapis.com/auth/calendar")) //기본 email, profile, openid + calendar 권한 요청
@@ -69,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+
     private fun processServerLogin(serverAuthCode: String?) {
         //GoogleLoginService: google access_token, refresh_token 발급 요청 위한 service
         GoogleLoginService.instance.getToken(
@@ -87,14 +95,8 @@ class LoginActivity : AppCompatActivity() {
                 if (response.isSuccessful) { //성공 시
                     Log.d("Google Login", "onResponse: ${response.body()}")
                     //아래 코드 없으면 다음 로그인 시 자동 로그인 됨, 즉 다른 계정으로 로그인하고 싶어도 이전에 로그인했던 계정으로 자동 로그인
-                    // googleSignInClient.signOut()
-                    if (CoalbaApplication.prefs.accessToken == null && CoalbaApplication.prefs.refreshToken == null){
-                        login("GOOGLE", response.body()?.accessToken, response.body()?.refreshToken) //백 서버 로그인
-                    }
-                    else{
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    }
+                    googleSignInClient.signOut()
+                    login("GOOGLE", response.body()?.accessToken, response.body()?.refreshToken) //백 서버 로그인
                 } else { //실패 시
                     Log.e("Google Login", "onResponseFail: ${response.code()}")
                 }
@@ -105,6 +107,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
     private fun googleLogin() {
         val signInIntent = googleSignInClient.signInIntent
         authResultLauncher.launch(signInIntent)
@@ -123,12 +126,17 @@ class LoginActivity : AppCompatActivity() {
                         Log.e("error 잡자","accessToken = ${result?.accessToken}")
                         Log.e("error 잡자","refreshToken = ${result?.refreshToken}")
 
-                        //백 서버로부터 발급받은 token 내부 저장소에 저장
+                        // 백 서버로부터 발급받은 token 내부 저장소에 저장
                         CoalbaApplication.prefs.accessToken = result?.accessToken
                         CoalbaApplication.prefs.refreshToken = result?.refreshToken
 
-                        // 처음 로그인할 때 프로필 등록 화면으로 가장 먼저 이동해야 함
-                        val intent = Intent(this@LoginActivity, ProfileRegisterActivity::class.java)
+                        // 새로운 유저인 경우 프로필 등록 화면으로 가장 먼저 이동해야 함
+                        val intent: Intent = if (result?.isNewUser == true) {
+                            Intent(this@LoginActivity, ProfileRegisterActivity::class.java)
+                        } else {
+                            Intent(this@LoginActivity, MainActivity::class.java)
+                        }
+                        finish()
                         startActivity(intent)
                     } else { //실패 시
                         Log.e(ContentValues.TAG, "onResponse: ${response.code()}")
