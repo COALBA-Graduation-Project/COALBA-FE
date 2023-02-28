@@ -2,23 +2,13 @@ package com.example.coalba.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.example.coalba.adapter.AlbaListAdapter
-import com.example.coalba.adapter.HomeSchduleAdapter
-import com.example.coalba.adapter.WeekCalendarAdapter
-import com.example.coalba.data.response.AlbalistData
-import com.example.coalba.data.response.HomeScheduleData
-import com.example.coalba.data.response.ResponseWeekCalendarData
+import android.view.*;
+import androidx.recyclerview.widget.*
+import com.example.coalba.adapter.*
+import com.example.coalba.data.response.*
 import com.example.coalba.databinding.FragmentHomeBinding
 import com.jakewharton.threetenabp.AndroidThreeTen
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalDate
-import org.threeten.bp.Month
+import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter.ofPattern
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.TemporalAdjusters.lastDayOfMonth
@@ -57,11 +47,12 @@ class HomeFragment : Fragment() {
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.rvHomeWeek)
 
-        setListView()
         AndroidThreeTen.init(context)
+        setListView()
         initRecycler()
         return root
     }
+
     // list(날짜, 요일)를 만들고, adapter를 등록하는 메소드
     private fun setListView(){
         // 현재 달의 마지막 날짜
