@@ -12,6 +12,7 @@ import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.api.service.GoogleLoginService
 import com.example.coalba.data.request.AuthRequestData
 import com.example.coalba.data.request.GoogleLoginRequestData
+import com.example.coalba.data.request.NotificationRequestData
 import com.example.coalba.data.response.AuthResponseData
 import com.example.coalba.data.response.GoogleLoginResponseData
 import com.example.coalba.databinding.ActivityLoginBinding
@@ -20,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -155,5 +157,24 @@ class LoginActivity : AppCompatActivity() {
         // onDestroy 에서 binding class 인스턴스 참조를 정리해주어야 함
         mBinding = null
         super.onDestroy()
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            println("it = $it") //토큰 출력, it이 토큰값
+            // Coalba 서버에 해당 디바이스 토큰 저장하는 서버 연동
+            val notificationData = NotificationRequestData(deviceToken = it)
+            RetrofitManager.notificationService?.notification(notificationData)?.enqueue(object:
+                Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful){
+                        Log.d("Notification", "success")
+                    }else{
+                        // 이곳은 에러 발생할 경우 실행됨
+                        Log.d("Notification", "fail")
+                    }
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("Notification", "error")
+                }
+            })
+        }
     }
 }
