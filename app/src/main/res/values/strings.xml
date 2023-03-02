@@ -1,7 +1,62 @@
 <resources>
     <string name="app_name">Coalba</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- ToolBar -->
+    <string name="toolbar_logo">로고</string>
+    <string name="toolbar_notice">알림</string>
+
+    <!-- Base -->
+    <string name="base_name1">김다은</string>
+    <string name="base_name2">신지연</string>
+    <string name="base_name3">조예진</string>
+    <string name="base_store_name1">송이커피 숙대점</string>
+    <string name="base_store_name2">송이마라탕 숙대점</string>
+    <string name="base_store_name3">송이쌀국수 숙대점</string>
+    <string name="base_time">15:00-19:00</string>
+    <string name="base_starttime">15:00</string>
+    <string name="base_endtime">19:00</string>
+    <string name="base_ok">확인</string>
+    <string name="base_cancel">취소</string>
+    <string name="base_state">근무중</string>
+
+    <!-- ProfileRegister -->
+    <string name="profileregister_title">프로필 등록</string>
+    <string name="profileregister_name">이름</string>
+    <string name="profileregister_et_name">이름을 적어주세요</string>
+    <string name="profileregister_phonenumber">전화번호</string>
+    <string name="profileregister_et_phonenumber">전화번호를 적어주세요</string>
+    <string name="profileregister_birth">생년월일</string>
+    <string name="profileregister_et_birth">생년월일 (yyyy-MM-dd)</string>
+    <string name="profileregister_type">회원유형</string>
+    <string name="profileregister_completion">완료</string>
+    <string name="profileregister_CEO">사장</string>
+    <string name="profileregister_parttime">알바생</string>
+
+    <!-- ProfileModify -->
+    <string name="profileedit_title">프로필 수정</string>
+
+    <!-- Mypage -->
+    <string name="mypage_staff"> 알바님</string>
+    <string name="mypage_greet">오늘도 수고하세요~</string>
+    <string name="mypage_profile_modify">프로필 수정</string>
+    <string name="mypage_title1">알바 관리</string>
+    <string name="mypage_title2">개인 관리</string>
+    <string name="mypage_manage1">근무내역 및 알바비 관리</string>
+    <string name="mypage_manage2">대타근무 요청 관리</string>
+    <string name="mypage_memo">메모장</string>
+    <string name="mypage_logout">로그아웃</string>
+
+    <!-- PartTimeJobManage -->
+    <string name="parttimejobmanage_title">알바생 관리</string>
+    <string name="parttimejobmanage_phonenumber">01012345678</string>
+    <string name="parttimejobmanage_birth">1999.05.29</string>
+
+    <!-- PartTimeJobAdd -->
+    <string name="parttimejobadd_title">알바생 추가</string>
+    <string name="parttimejobadd_email">알바생 이메일</string>
+    <string name="parttimejobadd_et_email">이메일을 적어주세요</string>
+    <string name="parttimejobadd_invite">초대하기</string>
+
     <string-array name="workhistory_list">
         <item>2022</item>
         <item>2021</item>

@@ -27,10 +27,10 @@
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="21sp"
+                android:textSize="21dp"
                 android:textStyle="bold"
-                android:textColor="#06B563"
-                android:text="프로필 등록"
+                android:textColor="@color/main"
+                android:text="@string/profileregister_title"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -45,7 +45,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- todo camera 부분 수정 -->
             <ImageView
                 android:id="@+id/iv_register_camera"
                 android:layout_width="36dp"
@@ -60,10 +59,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:text="이름"
+                android:text="@string/profileregister_name"
                 app:layout_constraintTop_toBottomOf="@+id/iv_register_profile"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -72,8 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:hint="이름을 적어주세요"
-                android:textSize="15sp"
+                android:hint="@string/profileregister_et_name"
+                android:textSize="15dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_register_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -83,10 +82,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:text="전화번호"
+                android:text="@string/profileregister_phonenumber"
                 app:layout_constraintTop_toBottomOf="@+id/et_register_name"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -95,8 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:hint="전화번호를 적어주세요"
-                android:textSize="15sp"
+                android:hint="@string/profileregister_et_phonenumber"
+                android:textSize="15dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_register_phonenumber"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -106,10 +105,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:text="생년월일"
+                android:text="@string/profileregister_birth"
                 app:layout_constraintTop_toBottomOf="@+id/et_register_phonenumber"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -118,8 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:hint="생년월일을 적어주세요"
-                android:textSize="15sp"
+                android:hint="@string/profileregister_et_birth"
+                android:textSize="15dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_register_birth"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -129,10 +128,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:text="회원유형"
+                android:text="@string/profileregister_type"
                 app:layout_constraintTop_toBottomOf="@+id/et_register_birth"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -149,16 +148,16 @@
                     android:id="@+id/rb_president"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="사장"
+                    android:textSize="18dp"
+                    android:text="@string/profileregister_CEO"
                     android:layout_marginEnd="76dp"/>
 
                 <RadioButton
                     android:id="@+id/rb_alba"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="알바생"/>
+                    android:textSize="18dp"
+                    android:text="@string/profileregister_parttime"/>
             </RadioGroup>
 
             <Button
@@ -169,10 +168,10 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="12dp"
                 android:layout_marginHorizontal="12dp"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="완료"
+                android:text="@string/profileregister_completion"
                 app:layout_constraintTop_toBottomOf="@id/rg_register"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
