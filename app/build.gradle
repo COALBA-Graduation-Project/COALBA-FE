@@ -84,5 +84,9 @@ dependencies {
     implementation 'org.altbeacon:android-beacon-library:2.19.5'
     //FCM
     implementation 'com.google.firebase:firebase-messaging:23.1.1'
+    // okhttp3
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 apply plugin: 'com.google.gms.google-services'

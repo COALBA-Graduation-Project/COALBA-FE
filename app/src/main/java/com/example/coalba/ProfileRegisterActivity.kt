@@ -13,7 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.databinding.ActivityProfileRegisterBinding
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -66,6 +68,40 @@ class ProfileRegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.ivRegisterCamera.setOnClickListener {
             selectGallery()
+        }
+        // 프로필 등록 서버 연동
+        binding.btnRegisterFinish.setOnClickListener {
+            Log.d("profileRegister", "시작")
+            Log.d("datavalue", "multipart값=> " + imageWideUri)
+            imageFile = File(getRealPathFromURI(imageWideUri!!))
+            // 서버로 보내기 위해 RequestBody객체로 변환
+            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile!!)
+            val body =
+                MultipartBody.Part.createFormData("imageFile", imageFile!!.name, requestFile)
+            // String 값에 "" 없애기
+            val jsonObj = JSONObject()
+            jsonObj.put("realName", binding.etRegisterName.text)
+            jsonObj.put("phoneNumber", binding.etRegisterPhonenumber.text)
+            jsonObj.put("birthDate", binding.etRegisterBirth.text)
+            val body2 = RequestBody.create("application/json".toMediaTypeOrNull(), jsonObj.toString())
+            // 현재 사용자의 정보를 받아올 것을 명시
+            // 서버 통신은 I/O 작업이므로 비동기적으로 받아올 Callback 내부 코드는 나중에 데이터를 받아오고 실행
+            RetrofitManager.profileService?.profileRegister(body2,body)?.enqueue(object : Callback<Void>{
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    // 네트워크 통신에 성공한 경우
+                    if (response.isSuccessful) {
+                        Log.d("ProfileRegister", "success")
+                        // 메인화면
+                        val intent = Intent(this@ProfileRegisterActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }else { // 이곳은 에러 발생할 경우 실행됨
+                        Log.d("ProfileRegister", "fail")
+                    }
+                }
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("ProfileRegister", "error!")
+                }
+            })
         }
     }
     // 이미지 실제 경로 반환
