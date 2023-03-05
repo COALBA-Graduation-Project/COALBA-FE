@@ -5,6 +5,12 @@
     <string name="toolbar_logo">로고</string>
     <string name="toolbar_notice">알림</string>
 
+    <!-- BottomNavigation -->
+    <string name="bottomnavigation_home">홈</string>
+    <string name="bottomnavigation_workspace">워크스페이스</string>
+    <string name="bottomnavigation_message">쪽지</string>
+    <string name="bottomnavigation_mypage">마이페이지</string>
+
     <!-- Base -->
     <string name="base_name1">김다은</string>
     <string name="base_name2">신지연</string>

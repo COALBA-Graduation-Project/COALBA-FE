@@ -4,20 +4,20 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:title="@string/bottomnavigation_home"/>
 
     <item
         android:id="@+id/workspaceFragment"
         android:icon="@drawable/ic_workspace"
-        android:title="Workspace"/>
+        android:title="@string/bottomnavigation_workspace"/>
 
     <item
         android:id="@+id/messageFragment"
         android:icon="@drawable/ic_message"
-        android:title="Message"/>
+        android:title="@string/bottomnavigation_message"/>
 
     <item
         android:id="@+id/mypageFragment"
         android:icon="@drawable/ic_mypage"
-        android:title="Mypage"/>
+        android:title="@string/bottomnavigation_mypage"/>
 </menu>
