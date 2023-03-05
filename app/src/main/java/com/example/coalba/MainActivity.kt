@@ -8,6 +8,9 @@ import android.os.*
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -49,6 +52,13 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 커스텀한 toolbar를 액션바로 사용
+        setSupportActionBar(binding.tbMain)
+        // toolbar 타이틀 제거
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setLogo(R.drawable.ic_logo)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
+
         navController= Navigation.findNavController(this,R.id.main_nav_host_fragment)
         setupWithNavController(binding.bnv,navController)
 
@@ -79,6 +89,22 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
         //iBeacon용 Layout 설정 (설정해야지 해당 비콘 인식 가능)
         beaconManager!!.beaconParsers.add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"))
         //===== beacon 코드 끝 =====
+    }
+
+    // 액션버튼 메뉴 액션바에 집어넣기
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+    // 액션버튼 클릭 했을 때
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.notice -> {
+                Toast.makeText(applicationContext, "알림 화면으로!", Toast.LENGTH_SHORT).show()
+                return super.onOptionsItemSelected(item)
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     // 액티비티가 파괴될 때..
