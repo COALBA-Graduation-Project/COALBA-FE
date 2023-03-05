@@ -22,10 +22,11 @@ class MessageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMessageBinding.inflate(inflater, container, false)
-        initRecycler()
+        // initRecycler() => todo: MessageFragment용 adapter 하나 더 만들어야함!!!
         return binding.root
     }
 
+    /*
     private fun initRecycler(){
         albaListAdapter = AlbaListAdapter(requireContext())
         binding.rvAlbalist.adapter = albaListAdapter
@@ -38,5 +39,5 @@ class MessageFragment : Fragment() {
             albaListAdapter.datas=datas
             albaListAdapter.notifyDataSetChanged()
         }
-    }
+    }*/
 }
