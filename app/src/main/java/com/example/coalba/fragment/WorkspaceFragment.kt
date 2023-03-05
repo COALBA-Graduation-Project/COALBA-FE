@@ -34,7 +34,7 @@ class WorkspaceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // todo : 나의 워크스페이스 리스트 조회 서버 연동
+        // 나의 워크스페이스 리스트 조회 서버 연동
         RetrofitManager.workspaceService?.workspaceLook()?.enqueue(object:
             Callback<WorkspaceLookResponseData> {
             override fun onResponse(
@@ -45,7 +45,6 @@ class WorkspaceFragment : Fragment() {
                     Log.d("WorkspaceLook", "success")
                     val data = response.body()
                     val num = data!!.workspaceList.count()
-                    Log.d("num 값", "num 값 " + num)
                     albaListAdapter = AlbaListAdapter(requireContext())
                     binding.rvAlbalist.adapter = albaListAdapter
 
@@ -55,7 +54,6 @@ class WorkspaceFragment : Fragment() {
                     else{
                         for(i in 0..num-1){
                             val itemdata = response.body()?.workspaceList?.get(i)
-                            Log.d("responsevalue", "itemdata1_response 값 => "+ itemdata)
                             datas.add(AlbalistData(itemdata!!.workspaceId,itemdata!!.imageUrl, itemdata!!.name))
                         }
                         albaListAdapter.datas=datas

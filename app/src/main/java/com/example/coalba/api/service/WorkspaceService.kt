@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface WorkspaceService {
     // 워크스페이스 관련 service
-    // 나의 워크스페이스 리스트 조회 => 아직
+    // 나의 워크스페이스 리스트 조회
     @GET("staff/workspaces")
     fun workspaceLook() : Call<WorkspaceLookResponseData>
 }
