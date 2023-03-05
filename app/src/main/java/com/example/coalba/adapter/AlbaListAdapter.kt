@@ -5,8 +5,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.coalba.R
 import com.example.coalba.WorkspaceHomeActivity
 import com.example.coalba.data.response.AlbalistData
@@ -24,9 +26,11 @@ class AlbaListAdapter(private val context: Context): RecyclerView.Adapter<AlbaLi
         holder.bind(datas[position])
     }
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        private val img: ImageView = itemView.findViewById(R.id.iv_albalist_main)
         private val txtName: TextView = itemView.findViewById(R.id.tv_albalist_name)
 
         fun bind(item:AlbalistData){
+            Glide.with(itemView).load(item.img).into(img)
             txtName.text = item.name
 
             itemView.setOnClickListener {
