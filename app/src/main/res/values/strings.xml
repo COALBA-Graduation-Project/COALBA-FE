@@ -20,10 +20,13 @@
     <string name="base_store_name3">송이쌀국수 숙대점</string>
     <string name="base_time">15:00-19:00</string>
     <string name="base_starttime">15:00</string>
+    <string name="base_midtime">-</string>
     <string name="base_endtime">19:00</string>
     <string name="base_ok">확인</string>
     <string name="base_cancel">취소</string>
     <string name="base_state">근무중</string>
+    <string name="base_come">출근</string>
+    <string name="base_leave">퇴근</string>
 
     <!-- ProfileRegister -->
     <string name="profileregister_title">프로필 등록</string>
@@ -52,16 +55,17 @@
     <string name="mypage_memo">메모장</string>
     <string name="mypage_logout">로그아웃</string>
 
-    <!-- PartTimeJobManage -->
-    <string name="parttimejobmanage_title">알바생 관리</string>
-    <string name="parttimejobmanage_phonenumber">01012345678</string>
-    <string name="parttimejobmanage_birth">1999.05.29</string>
+    <!-- WorkspaceHome -->
+    <string name="workspacehome_month">2022년 10월</string>
+    <string name="workspacehome_sun">일</string>
+    <string name="workspacehome_mon">월</string>
+    <string name="workspacehome_tue">화</string>
+    <string name="workspacehome_wed">수</string>
+    <string name="workspacehome_thu">목</string>
+    <string name="workspacehome_fri">금</string>
+    <string name="workspacehome_sat">토</string>
+    <string name="workspacehome_day">11</string>
 
-    <!-- PartTimeJobAdd -->
-    <string name="parttimejobadd_title">알바생 추가</string>
-    <string name="parttimejobadd_email">알바생 이메일</string>
-    <string name="parttimejobadd_et_email">이메일을 적어주세요</string>
-    <string name="parttimejobadd_invite">초대하기</string>
 
     <string-array name="workhistory_list">
         <item>2022</item>
@@ -73,6 +77,7 @@
         <item>2016</item>
         <item>2015</item>
     </string-array>
+
     <string name="name_ex">조예진</string>
     <string name="place_ex">송이커피 숙대점</string>
     <string name="date_ex">10/30</string>

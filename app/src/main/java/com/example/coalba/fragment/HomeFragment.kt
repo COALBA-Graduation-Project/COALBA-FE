@@ -1,10 +1,13 @@
 package com.example.coalba.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.*;
+import android.widget.Toast
 import androidx.recyclerview.widget.*
 import com.example.coalba.adapter.*
+import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.response.*
 import com.example.coalba.databinding.FragmentHomeBinding
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -12,6 +15,9 @@ import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter.ofPattern
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.TemporalAdjusters.lastDayOfMonth
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -19,13 +25,10 @@ class HomeFragment : Fragment() {
     private var mBinding: FragmentHomeBinding? = null
     // 매번 null 체크를 할 필요없이 편의성을 위해 바인딩 변수 재선언
     private val binding get() = mBinding!!
-
-    val itemList = arrayListOf<ResponseWeekCalendarData>()
-    val listAdapter = WeekCalendarAdapter(itemList)
-    lateinit var calendarList: RecyclerView
-    lateinit var mLayoutManager: LinearLayoutManager
-    var monthNum: String = ""
-
+    // 주간 캘린더
+    lateinit var calendarAdapter: WeekCalendarAdapter
+    private var calendarList = ArrayList<WeekCalendarData>()
+    // 스케줄
     lateinit var homescheduleAdapter: HomeSchduleAdapter
     val datas = mutableListOf<HomeScheduleData>()
 
@@ -36,87 +39,110 @@ class HomeFragment : Fragment() {
         // 바인딩
         mBinding = FragmentHomeBinding.inflate(inflater,container,false)
         val root: View = binding.root
-        calendarList = binding.rvHomeWeek
-        mLayoutManager = LinearLayoutManager(root.context)
-
-        // recyclerview orientation (가로 방향 스크롤 설정)
-        mLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        calendarList.layoutManager = mLayoutManager
-
-        // PagerSnapHelper()를 설정함으로써 한 항목씩 스크롤이 되도록 만들 수 있다.
-        val snap = PagerSnapHelper()
-        snap.attachToRecyclerView(binding.rvHomeWeek)
-
         AndroidThreeTen.init(context)
-        setListView()
-        initRecycler()
         return root
     }
 
-    // list(날짜, 요일)를 만들고, adapter를 등록하는 메소드
-    private fun setListView(){
-        // 현재 달의 마지막 날짜
-        val lastDayOfMonth = LocalDate.now().with(lastDayOfMonth())
-        lastDayOfMonth.format(ofPattern("dd"))
-
-        for(i: Int in 1..lastDayOfMonth.dayOfMonth) {
-            val date = LocalDate.of(LocalDate.now().year, LocalDate.now().month, i)
-            val dayOfWeek: DayOfWeek = date.dayOfWeek
-            dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US)
-            if(LocalDate.now().month.toString() == "JANUARY"){
-                monthNum = "1"
-            }
-            else if(LocalDate.now().month.toString() == "FEBRUARY"){
-                monthNum = "2"
-            }
-            else if(LocalDate.now().month.toString() == "MARCH"){
-                monthNum = "3"
-            }
-            else if(LocalDate.now().month.toString() == "APRIL"){
-                monthNum = "4"
-            }
-            else if(LocalDate.now().month.toString() == "MAY"){
-                monthNum = "5"
-            }
-            else if(LocalDate.now().month.toString() == "JUNE"){
-                monthNum = "6"
-            }
-            else if(LocalDate.now().month.toString() == "JULY"){
-                monthNum = "7"
-            }
-            else if(LocalDate.now().month.toString() == "AUGUST"){
-                monthNum = "8"
-            }
-            else if(LocalDate.now().month.toString() == "SEPTEMBER"){
-                monthNum = "9"
-            }
-            else if(LocalDate.now().month.toString() == "OCTOBER"){
-                monthNum = "10"
-            }
-            else if(LocalDate.now().month.toString() == "NOVEMBER"){
-                monthNum = "11"
-            }
-            else{
-                monthNum = "12"
-            }
-            binding.tvHomeDate.text = LocalDate.now().year.toString()+"년 "+ monthNum +"월"
-
-            itemList.add(ResponseWeekCalendarData(dayOfWeek.toString().substring(0, 3), i.toString()))
-        }
-        calendarList.adapter = listAdapter
-    }
-
-
-    private fun initRecycler(){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         homescheduleAdapter = HomeSchduleAdapter(requireContext())
-        binding.rvHomeSchedule.adapter = homescheduleAdapter
 
-        datas.apply{
-            add(HomeScheduleData(workname = "송이커피 숙대점", starttime = "12:00", endtime = "15:00", state = "알바중"))
-            add(HomeScheduleData(workname = "송이마라탕 숙대점", starttime = "16:00", endtime = "18:00", state = "알바전"))
-            add(HomeScheduleData(workname = "송송마카롱 숙대점", starttime = "19:00", endtime = "22:00", state = "알바전"))
-            homescheduleAdapter.datas=datas
-            homescheduleAdapter.notifyDataSetChanged()
-        }
+        calendarAdapter = WeekCalendarAdapter(calendarList, object:WeekCalendarAdapter.HomeDayClickListener {
+            override fun click(year: Int, month: Int, day: Int) {
+                // 홈 해당 날짜 스케줄 조회 서버 연동
+                RetrofitManager.scheduleService?.scheduleDate(year,month,day)?.enqueue(object:
+                    Callback<ScheduleDateResponseData> {
+                    override fun onResponse(
+                        call: Call<ScheduleDateResponseData>,
+                        response: Response<ScheduleDateResponseData>
+                    ) {
+                        if(response.isSuccessful){
+                            Log.d("ScheduleDate", "success")
+                            val data = response.body()
+                            // 이전의 recyclerview 값 전체 지우기
+                            datas.removeAll(datas)
+                            homescheduleAdapter.notifyDataSetChanged()
+
+                            val num2 = data!!.selectedScheduleList.count()
+                            Log.d("num 값", "num 값 " + num2)
+
+                            if (num2 == 0){
+                                Toast.makeText(requireContext(), "해당 날짜 스케줄이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                binding.rvHomeSchedule.adapter = homescheduleAdapter
+
+                                for(i in 0..num2-1){
+                                    val itemdata2 = response.body()?.selectedScheduleList?.get(i)
+                                    Log.d("responsevalue", "workspace response 값 => "+ itemdata2)
+
+                                    datas.add(HomeScheduleData(itemdata2!!.scheduleId, itemdata2.workspace!!.name, itemdata2.scheduleStartTime, itemdata2.scheduleEndTime, itemdata2.status))
+                                }
+                                homescheduleAdapter.datas=datas
+                                homescheduleAdapter.notifyDataSetChanged()
+                            }
+                        }else{ // 이곳은 에러 발생할 경우 실행됨
+                            Log.d("ScheduleDate", "fail")
+                        }
+                    }
+                    override fun onFailure(call: Call<ScheduleDateResponseData>, t: Throwable) {
+                        Log.d("ScheduleDate", "error")
+                    }
+                })
+            }
+        })
+
+        // 홈 달력 정보 조회 서버 연동
+        RetrofitManager.scheduleService?.scheduleMain()?.enqueue(object:
+            Callback<ScheduleMainResponseData> {
+            override fun onResponse(
+                call: Call<ScheduleMainResponseData>,
+                response: Response<ScheduleMainResponseData>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("ScheduleMain", "success")
+                    val data = response.body()
+                    val num = data!!.dateList.count()
+                    Log.d("num 값", "num 값 " + num)
+                    for(i in 0..num-1){
+                        val itemdata = response.body()?.dateList?.get(i)
+                        Log.d("responsevalue", "itemdata1_response 값 => "+ itemdata)
+                        if (i == 3){
+                            binding.tvHomeDate.text = itemdata!!.date!!.year.toString() + "년" + itemdata!!.date!!.month.toString() + "월"
+                        }
+                        calendarList.add(WeekCalendarData(itemdata!!.date!!.year, itemdata!!.date!!.month, itemdata!!.date!!.dayOfWeek, itemdata!!.date!!.day, itemdata!!.totalScheduleStatus))
+                    }
+                    binding.rvHomeWeek.adapter = calendarAdapter
+                    binding.rvHomeWeek.layoutManager = GridLayoutManager(context, 7)
+
+                    val num3 = data.selectedSubPage!!.selectedScheduleList.count()
+                    Log.d("num 값", "num 값 " + num3)
+                    if (num3 == 0){
+                        Toast.makeText(requireContext(), "해당 날짜 스케줄이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        binding.rvHomeSchedule.adapter = homescheduleAdapter
+                        for(i in 0..num3-1){
+                            val itemdata3 = response.body()?.selectedSubPage?.selectedScheduleList?.get(i)
+                            Log.d("responsevalue", "response 값 => "+ itemdata3)
+
+                            datas.add(HomeScheduleData(itemdata3!!.scheduleId, itemdata3.workspace!!.name, itemdata3.scheduleStartTime, itemdata3.scheduleEndTime, itemdata3.status))
+                        }
+                        homescheduleAdapter.datas=datas
+                        homescheduleAdapter.notifyDataSetChanged()
+                    }
+                }else{ // 이곳은 에러 발생할 경우 실행됨 => 401일 경우 token 만료된 것!
+                    val data1 = response.code()
+                    Log.d("status code", data1.toString())
+                    val data2 = response.headers()
+                    Log.d("header", data2.toString())
+                    Log.d("server err", response.errorBody()?.string().toString())
+                    Log.d("ScheduleMain", "fail")
+                }
+            }
+            override fun onFailure(call: Call<ScheduleMainResponseData>, t: Throwable) {
+                Log.d("ScheduleMain", "error")
+            }
+        })
     }
 }

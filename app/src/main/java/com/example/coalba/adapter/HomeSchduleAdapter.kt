@@ -8,8 +8,8 @@ import com.example.coalba.*
 import com.example.coalba.data.response.HomeScheduleData
 
 class HomeSchduleAdapter(private val context: Context) : RecyclerView.Adapter<HomeSchduleAdapter.ViewHolder>() {
-
     var datas = mutableListOf<HomeScheduleData>()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
