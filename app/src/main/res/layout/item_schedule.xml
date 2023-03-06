@@ -22,23 +22,57 @@
         android:layout_height="wrap_content"
         android:text="@string/name_ex"
         android:textColor="@color/black"
-        android:textSize="17sp"
+        android:textSize="17dp"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/ll_schedule_item"
         app:layout_constraintTop_toTopOf="@+id/ll_schedule_item"
         app:layout_constraintBottom_toBottomOf="@id/ll_schedule_item"/>
 
     <TextView
-        android:id="@+id/tv_schedule_time"
+        android:id="@+id/tv_schedule_starttime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="15:00-18:00"
+        android:text="@string/base_starttime"
         android:textColor="@color/black"
-        android:textSize="17sp"
+        android:textSize="17dp"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/tv_schedule_name"
         app:layout_constraintTop_toTopOf="@+id/ll_schedule_item"
         app:layout_constraintBottom_toBottomOf="@id/ll_schedule_item"/>
 
+    <TextView
+        android:id="@+id/tv_schedule_dash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/base_midtime"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_schedule_starttime"
+        app:layout_constraintTop_toTopOf="@+id/ll_schedule_item"
+        app:layout_constraintBottom_toBottomOf="@id/ll_schedule_item"/>
+
+    <TextView
+        android:id="@+id/tv_schedule_endtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/base_endtime"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_schedule_dash"
+        app:layout_constraintTop_toTopOf="@+id/ll_schedule_item"
+        app:layout_constraintBottom_toBottomOf="@id/ll_schedule_item"/>
+
+    <ImageView
+        android:id="@+id/iv_workspacehome_change"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/change"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/ll_schedule_item"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_schedule_item"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

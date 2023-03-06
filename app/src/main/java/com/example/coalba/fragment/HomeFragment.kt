@@ -102,6 +102,10 @@ class HomeFragment : Fragment() {
                 if(response.isSuccessful){
                     Log.d("ScheduleMain", "success")
                     val data = response.body()
+                    // 이전의 recyclerview 값 전체 지우기
+                    calendarList.removeAll(calendarList)
+                    calendarAdapter.notifyDataSetChanged()
+
                     val num = data!!.dateList.count()
                     Log.d("num 값", "num 값 " + num)
                     for(i in 0..num-1){

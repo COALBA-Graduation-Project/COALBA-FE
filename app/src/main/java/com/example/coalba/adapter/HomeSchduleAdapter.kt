@@ -34,9 +34,23 @@ class HomeSchduleAdapter(private val context: Context) : RecyclerView.Adapter<Ho
             txtWorkname.text = item.workname
             txtStarttime.text = item.starttime
             txtEndtime.text = item.endtime
-            txtState.text = item.state
             btnScheduleCome.setOnClickListener {
                 (context as MainActivity).detectBeacon()
+            }
+            if (item.state == "BEFORE_WORK"){
+                txtState.text = "근무전"
+            }
+            else if (item.state == "ON_DUTY"){
+                txtState.text = "근무중"
+            }
+            else if (item.state == "LATE"){
+                txtState.text = "지각"
+            }
+            else if (item.state == "SUCCESS"){
+                txtState.text = "완료"
+            }
+            else{
+                txtState.text = "미완료"
             }
         }
     }
