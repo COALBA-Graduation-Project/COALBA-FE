@@ -3,55 +3,66 @@ package com.example.coalba.adapter
 import android.content.Context
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coalba.*
 import com.example.coalba.data.response.HomeScheduleData
+import com.example.coalba.databinding.ItemHomeScheduleBinding
 
-class HomeSchduleAdapter(private val context: Context) : RecyclerView.Adapter<HomeSchduleAdapter.ViewHolder>() {
+class HomeSchduleAdapter(private val context: Context, private val startClickListener: StartClickListener, private val endClickListener: EndClickListener) : RecyclerView.Adapter<HomeSchduleAdapter.ViewHolder>() {
     var datas = mutableListOf<HomeScheduleData>()
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): HomeSchduleAdapter.ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_home_schedule, parent, false)
-        return ViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(ItemHomeScheduleBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
     override fun getItemCount(): Int = datas.size
 
-    override fun onBindViewHolder(holder: HomeSchduleAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
     }
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        private val txtWorkname: TextView = itemView.findViewById(R.id.tv_home_schedule_workname)
-        private val txtStarttime: TextView = itemView.findViewById(R.id.tv_home_schedule_starttime)
-        private val txtEndtime: TextView = itemView.findViewById(R.id.tv_home_schedule_endtime)
-        private val txtState: TextView = itemView.findViewById(R.id.tv_home_schedule_state)
-        private val btnScheduleCome: Button = itemView.findViewById(R.id.btn_home_schedule_come)
 
+    inner class ViewHolder(val binding: ItemHomeScheduleBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item: HomeScheduleData){
-            txtWorkname.text = item.workname
-            txtStarttime.text = item.starttime
-            txtEndtime.text = item.endtime
-            btnScheduleCome.setOnClickListener {
-                (context as MainActivity).detectBeacon()
-            }
-            if (item.state == "BEFORE_WORK"){
-                txtState.text = "근무전"
-            }
-            else if (item.state == "ON_DUTY"){
-                txtState.text = "근무중"
-            }
-            else if (item.state == "LATE"){
-                txtState.text = "지각"
-            }
-            else if (item.state == "SUCCESS"){
-                txtState.text = "완료"
-            }
-            else{
-                txtState.text = "미완료"
+            with(binding){
+                if (item.logicalStartTime == null){
+                    tvHomeScheduleStarttime.text = item.starttime // 출근 전일 때에는 스케줄 시작 시간
+                }else{
+                    tvHomeScheduleStarttime.text = item.logicalStartTime
+                    if (item.state == "ON_DUTY") tvHomeScheduleStarttime.setTextColor(ContextCompat.getColor(context, R.color.main)) //근무 중
+                    else tvHomeScheduleStarttime.setTextColor(ContextCompat.getColor(context, R.color.refuse)) //지각
+                }
+                if (item.logicalEndTime == null){
+                    tvHomeScheduleEndtime.text = item.endtime // 퇴근 전일 때에는 스케줄 종료 시간
+                }else{
+                    tvHomeScheduleEndtime.text = item.logicalEndTime
+                    if (item.state == "SUCCESS" || item.logicalEndTime == item.endtime) tvHomeScheduleEndtime.setTextColor(ContextCompat.getColor(context, R.color.main)) //정상 퇴근
+                    else tvHomeScheduleEndtime.setTextColor(ContextCompat.getColor(context, R.color.refuse)) //조기 퇴근
+                }
+                tvHomeScheduleWorkname.text = item.workname
+                when (item.state) {
+                    "BEFORE_WORK" -> { tvHomeScheduleState.text = "근무전" }
+                    "ON_DUTY" -> { tvHomeScheduleState.text = "근무중" }
+                    "LATE" -> { tvHomeScheduleState.text = "지각" }
+                    "SUCCESS " -> { tvHomeScheduleState.text = "근무 완료" }
+                    "FAIL" -> { tvHomeScheduleState.text = "근무 실패" }
+                }
+
+                btnHomeScheduleCome.setOnClickListener {
+                    (context as MainActivity).detectBeacon()
+                    startClickListener.click1(datas[position].scheduleId, position)
+                }
+                btnHomeScheduleLeave.setOnClickListener {
+                    endClickListener.click2(datas[position].scheduleId, position)
+                }
             }
         }
+    }
+
+    interface StartClickListener{
+        fun click1(scheduleId : Long, position: Int)
+    }
+
+    interface EndClickListener{
+        fun click2(scheduleId : Long, position: Int)
     }
 }

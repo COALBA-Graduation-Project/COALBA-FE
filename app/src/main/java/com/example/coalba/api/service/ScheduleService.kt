@@ -29,11 +29,11 @@ interface ScheduleService {
     @GET("staff/schedules/{scheduleId}")
     fun scheduleSummary(@Path("scheduleId") scheduleId: Long) : Call<ScheduleSummaryResponseData>
 
-    // 해당 스케줄 출근 요청 => 아직
+    // 해당 스케줄 출근 요청
     @PUT("staff/schedules/{scheduleId}/start")
     fun scheduleStart(@Path("scheduleId") scheduleId: Long) : Call<ScheduleStartResponseData>
 
-    // 해당 스케줄 퇴근 요청 => 아직
+    // 해당 스케줄 퇴근 요청
     @PUT("staff/schedules/{scheduleId}/end")
     fun scheduleEnd(@Path("scheduleId") scheduleId: Long) : Call<ScheduleEndResponseData>
 }

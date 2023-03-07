@@ -45,7 +45,55 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homescheduleAdapter = HomeSchduleAdapter(requireContext())
+        homescheduleAdapter = HomeSchduleAdapter(requireContext(), object: HomeSchduleAdapter.StartClickListener{
+            override fun click1(scheduleId: Long, position: Int) {
+                // 해당 스케줄 출근 요청
+                RetrofitManager.scheduleService?.scheduleStart(scheduleId)?.enqueue(object:
+                    Callback<ScheduleStartResponseData> {
+                    override fun onResponse(
+                        call: Call<ScheduleStartResponseData>,
+                        response: Response<ScheduleStartResponseData>
+                    ) {
+                        if(response.isSuccessful){
+                            Log.d("ScheduleStart", "success")
+                            val data = response.body()
+                            datas[position].logicalStartTime = data!!.logicalStartTime
+                            datas[position].state = data.status
+                            homescheduleAdapter.notifyDataSetChanged()
+                        }else{ // 이곳은 에러 발생할 경우 실행됨
+                            Log.d("ScheduleStart", "fail")
+                        }
+                    }
+                    override fun onFailure(call: Call<ScheduleStartResponseData>, t: Throwable) {
+                        Log.d("ScheduleStart", "error")
+                    }
+                })
+            }
+        }, object: HomeSchduleAdapter.EndClickListener{
+            override fun click2(scheduleId: Long, position: Int) {
+                // 해당 스케줄 퇴근 요청
+                RetrofitManager.scheduleService?.scheduleEnd(scheduleId)?.enqueue(object:
+                    Callback<ScheduleEndResponseData> {
+                    override fun onResponse(
+                        call: Call<ScheduleEndResponseData>,
+                        response: Response<ScheduleEndResponseData>
+                    ) {
+                        if(response.isSuccessful){
+                            Log.d("ScheduleEnd", "success")
+                            val data = response.body()
+                            datas[position].logicalEndTime = data!!.logicalEndTime
+                            datas[position].state = data.status
+                            homescheduleAdapter.notifyDataSetChanged()
+                        }else{ // 이곳은 에러 발생할 경우 실행됨
+                            Log.d("ScheduleEnd", "fail")
+                        }
+                    }
+                    override fun onFailure(call: Call<ScheduleEndResponseData>, t: Throwable) {
+                        Log.d("ScheduleEnd", "error")
+                    }
+                })
+            }
+        })
 
         calendarAdapter = WeekCalendarAdapter(calendarList, object:WeekCalendarAdapter.HomeDayClickListener {
             override fun click(year: Int, month: Int, day: Int) {
@@ -59,28 +107,17 @@ class HomeFragment : Fragment() {
                         if(response.isSuccessful){
                             Log.d("ScheduleDate", "success")
                             val data = response.body()
-                            // 이전의 recyclerview 값 전체 지우기
-                            datas.removeAll(datas)
-                            homescheduleAdapter.notifyDataSetChanged()
 
+                            datas.clear() // 기존 데이터 clear
                             val num2 = data!!.selectedScheduleList.count()
-                            Log.d("num 값", "num 값 " + num2)
-
                             if (num2 == 0){
-                                Toast.makeText(requireContext(), "해당 날짜 스케줄이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
+                                binding.tvHomeNoschedule.visibility = View.VISIBLE
                             }
-                            else{
-                                binding.rvHomeSchedule.adapter = homescheduleAdapter
-
-                                for(i in 0..num2-1){
-                                    val itemdata2 = response.body()?.selectedScheduleList?.get(i)
-                                    Log.d("responsevalue", "workspace response 값 => "+ itemdata2)
-
-                                    datas.add(HomeScheduleData(itemdata2!!.scheduleId, itemdata2.workspace!!.name, itemdata2.scheduleStartTime, itemdata2.scheduleEndTime, itemdata2.status))
-                                }
-                                homescheduleAdapter.datas=datas
-                                homescheduleAdapter.notifyDataSetChanged()
-                            }
+                            datas.addAll(data!!.selectedScheduleList.map {schedule ->
+                                HomeScheduleData(schedule.scheduleId, schedule.workspace!!.name, schedule.scheduleStartTime, schedule.scheduleEndTime, schedule.logicalStartTime, schedule.logicalEndTime, schedule.status)
+                            }.toMutableList())
+                            // 어댑터에 변경된 데이터 적용
+                            binding.rvHomeSchedule.adapter!!.notifyItemRangeChanged(0, datas.size)
                         }else{ // 이곳은 에러 발생할 경우 실행됨
                             Log.d("ScheduleDate", "fail")
                         }
@@ -102,45 +139,28 @@ class HomeFragment : Fragment() {
                 if(response.isSuccessful){
                     Log.d("ScheduleMain", "success")
                     val data = response.body()
-                    // 이전의 recyclerview 값 전체 지우기
-                    calendarList.removeAll(calendarList)
-                    calendarAdapter.notifyDataSetChanged()
+                    Log.d("data값", data.toString())
 
-                    val num = data!!.dateList.count()
-                    Log.d("num 값", "num 값 " + num)
-                    for(i in 0..num-1){
-                        val itemdata = response.body()?.dateList?.get(i)
-                        Log.d("responsevalue", "itemdata1_response 값 => "+ itemdata)
-                        if (i == 3){
-                            binding.tvHomeDate.text = itemdata!!.date!!.year.toString() + "년" + itemdata!!.date!!.month.toString() + "월"
-                        }
-                        calendarList.add(WeekCalendarData(itemdata!!.date!!.year, itemdata!!.date!!.month, itemdata!!.date!!.dayOfWeek, itemdata!!.date!!.day, itemdata!!.totalScheduleStatus))
-                    }
+                    calendarList.clear()
+                    calendarList.addAll(data!!.dateList.map {date ->
+                        WeekCalendarData(date.date!!.year, date.date.month, date.date.dayOfWeek, date.date.day, date.totalScheduleStatus)
+                    })
+                    val selectedDate = data.selectedSubPage!!.selectedDate!! //선택된 날짜 (오늘 날짜)
+                    binding.tvHomeDate.text = "${selectedDate.year}년 ${selectedDate.month}월"
                     binding.rvHomeWeek.adapter = calendarAdapter
                     binding.rvHomeWeek.layoutManager = GridLayoutManager(context, 7)
+                    binding.rvHomeWeek.adapter!!.notifyItemRangeChanged(0, calendarList.size)
 
-                    val num3 = data.selectedSubPage!!.selectedScheduleList.count()
-                    Log.d("num 값", "num 값 " + num3)
-                    if (num3 == 0){
-                        Toast.makeText(requireContext(), "해당 날짜 스케줄이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        binding.rvHomeSchedule.adapter = homescheduleAdapter
-                        for(i in 0..num3-1){
-                            val itemdata3 = response.body()?.selectedSubPage?.selectedScheduleList?.get(i)
-                            Log.d("responsevalue", "response 값 => "+ itemdata3)
+                    // 스케줄 recyclerview
+                    datas.clear()
+                    binding.rvHomeSchedule.adapter = homescheduleAdapter
+                    datas.addAll(data!!.selectedSubPage!!.selectedScheduleList.map {schedule ->
+                        HomeScheduleData(schedule.scheduleId, schedule.workspace!!.name, schedule.scheduleStartTime, schedule.scheduleEndTime, schedule.logicalStartTime, schedule.logicalEndTime, schedule.status)
+                    }.toMutableList())
+                    homescheduleAdapter.datas=datas
+                    homescheduleAdapter.notifyDataSetChanged()
 
-                            datas.add(HomeScheduleData(itemdata3!!.scheduleId, itemdata3.workspace!!.name, itemdata3.scheduleStartTime, itemdata3.scheduleEndTime, itemdata3.status))
-                        }
-                        homescheduleAdapter.datas=datas
-                        homescheduleAdapter.notifyDataSetChanged()
-                    }
                 }else{ // 이곳은 에러 발생할 경우 실행됨 => 401일 경우 token 만료된 것!
-                    val data1 = response.code()
-                    Log.d("status code", data1.toString())
-                    val data2 = response.headers()
-                    Log.d("header", data2.toString())
-                    Log.d("server err", response.errorBody()?.string().toString())
                     Log.d("ScheduleMain", "fail")
                 }
             }

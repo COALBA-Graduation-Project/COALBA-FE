@@ -46,6 +46,16 @@
                 android:orientation="vertical"
                 android:overScrollMode="never" />
 
+            <TextView
+                android:id="@+id/tv_home_noschedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/home_noschedule"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -1,9 +1,11 @@
 package com.example.coalba.data.response
 
 data class HomeScheduleData (
-    val scheduleId : Long,
-    val workname : String,
-    val starttime : String,
-    val endtime : String,
-    val state : String
+    var scheduleId : Long,
+    var workname : String,
+    var starttime : String,
+    var endtime : String,
+    var logicalStartTime: String?,
+    var logicalEndTime: String?,
+    var state : String
 )
