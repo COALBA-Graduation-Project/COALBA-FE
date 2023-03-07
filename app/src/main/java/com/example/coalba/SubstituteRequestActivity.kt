@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.coalba.adapter.SubstituteAddAdapter
 import com.example.coalba.api.retrofit.RetrofitManager
+import com.example.coalba.data.request.SubstituteSendData
 import com.example.coalba.data.response.*
 import com.example.coalba.databinding.ActivitySubstituteRequestBinding
 import com.example.coalba.databinding.ActivityWorkspaceHomeBinding
@@ -21,6 +22,7 @@ class SubstituteRequestActivity : AppCompatActivity() {
     // 매번 null 체크를 할 필요없이 편의성을 위해 바인딩 변수 재선언
     private val binding get() = mBinding!!
     var sId : Long = 0
+    var albaId : Long = 0
     lateinit var substituteAdapter: SubstituteAddAdapter
     val datas = mutableListOf<SubstituteAddPersonData>()
 
@@ -67,14 +69,18 @@ class SubstituteRequestActivity : AppCompatActivity() {
                     text = name
                     setTextColor(getColor(R.color.black))
                 }
-                sId = staffId
+                binding.tvSubstituteRequestPerson.apply{
+                    text = name
+                    setTextColor(getColor(R.color.black))
+                }
+                albaId = staffId
                 putPersonDialog.dismiss()
             }
         })
         binding.clPerson.setOnClickListener {
             val sheetView = DialogSubstitutePersonBinding.inflate(layoutInflater)
 
-            // 해당 날짜에 근무 가능한 해당 워크스페이스 내 알바 리스트 조회 (for 스케줄 추가) 서버 연동 완료
+            // 대타근무 요청 가능한 알바 리스트 조회 서버 연동
             RetrofitManager.substituteReqService?.substitutePossible(sId)?.enqueue(object :
                 Callback<SubstitutePossibleResponseData> {
                 override fun onResponse(
@@ -110,5 +116,24 @@ class SubstituteRequestActivity : AppCompatActivity() {
             putPersonDialog.show()
         }
         // todo: 모든 값이 입력되었을때 버튼 색 변경 및 활성화
+
+        // 대타근무 요청 생성 (나의 스케줄인 경우에만)
+        binding.btnSubstituteRequest.setOnClickListener {
+            RetrofitManager.substituteReqService?.substituteSend(sId, albaId, SubstituteSendData(binding.etSubstituteRequestMessage.text.toString()))?.enqueue(object :
+                Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Log.d("SubstituteSend", "success")
+                        finish()
+                    } else { // 이곳은 에러 발생할 경우 실행됨
+                        Log.d("SubstituteSend", "fail")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.d("SubstituteSend", "error")
+                }
+            })
+        }
     }
 }
