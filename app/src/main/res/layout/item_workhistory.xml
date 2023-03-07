@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bg_mypage"
-    android:layout_marginBottom="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/bg_recyclerview"
+    android:elevation="8dp"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="16dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp">
 
     <TextView
         android:id="@+id/tv_workhistory_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="09"
+        android:text="@string/workhistory_month"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:textStyle="bold"
-        android:layout_marginStart="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -25,31 +27,20 @@
         android:id="@+id/tv_workhistory_month2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="월"
+        android:text="@string/workhistory_monthtext"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_month"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_workhistory_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="상세보기"
-       android:textColor="#06B563"
-        android:textSize="8sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tv_workhistory_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="총 근로 시간"
-        android:textColor="#8B8B8B"
-        android:textSize="10sp"
+        android:text="@string/workhistory_total_time"
+        android:textColor="@color/gray"
+        android:textSize="10dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_workhistory_month"
         app:layout_constraintStart_toStartOf="@id/tv_workhistory_month"/>
@@ -58,9 +49,9 @@
         android:id="@+id/tv_workhistory_hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="35"
+        android:text="@string/workhistory_hour1"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="11dp"
         android:textStyle="bold"
         android:layout_marginStart="4dp"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_time"
@@ -71,9 +62,9 @@
         android:id="@+id/tv_workhistory_hour2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="시간"
+        android:text="@string/workhistory_hour"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="11dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_hour"
         app:layout_constraintTop_toTopOf="@id/tv_workhistory_hour"/>
@@ -82,9 +73,9 @@
         android:id="@+id/tv_workhistory_minute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="30"
+        android:text="@string/workhistory_zero"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="11dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_hour2"
         app:layout_constraintTop_toTopOf="@id/tv_workhistory_hour"/>
@@ -93,34 +84,31 @@
         android:id="@+id/tv_workhistory_minute2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="분"
+        android:text="@string/workhistory_minute"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="11dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_minute"
         app:layout_constraintTop_toTopOf="@id/tv_workhistory_hour"/>
 
-    <LinearLayout
+    <View
         android:id="@+id/ll_workhistory_item"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="14dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="1dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_minute2"
         app:layout_constraintTop_toTopOf="@id/tv_workhistory_hour"
-        android:background="#D9D9D9"/>
+        android:background="@color/line"/>
 
     <TextView
         android:id="@+id/tv_workhistory_sum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="예상 근로비"
-        android:textColor="#8B8B8B"
-        android:textSize="10sp"
+        android:text="@string/workhistory_total_pay"
+        android:textColor="@color/gray"
+        android:textSize="10dp"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_workhistory_month"
         app:layout_constraintStart_toEndOf="@id/ll_workhistory_item"/>
 
@@ -128,9 +116,9 @@
         android:id="@+id/tv_workhistory_won"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="320,600"
+        android:text="@string/workhistory_sum"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="11dp"
         android:textStyle="bold"
         android:layout_marginStart="4dp"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_sum"
@@ -141,9 +129,9 @@
         android:id="@+id/tv_workhistory_won2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="원"
+        android:text="@string/workhistory_won"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="11dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tv_workhistory_won"
         app:layout_constraintTop_toTopOf="@id/tv_workhistory_won"/>

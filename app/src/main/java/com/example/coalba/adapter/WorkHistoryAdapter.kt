@@ -12,10 +12,7 @@ import com.example.coalba.data.response.WorkHistoryData
 class WorkHistoryAdapter(private val context: Context) : RecyclerView.Adapter<WorkHistoryAdapter.ViewHolder>(){
     var datas = mutableListOf<WorkHistoryData>()
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): WorkHistoryAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkHistoryAdapter.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_workhistory,parent,false)
         return ViewHolder(view)
     }
@@ -29,11 +26,13 @@ class WorkHistoryAdapter(private val context: Context) : RecyclerView.Adapter<Wo
         private val tvMonth: TextView = itemView.findViewById(R.id.tv_workhistory_month)
         private val tvHour: TextView = itemView.findViewById(R.id.tv_workhistory_hour)
         private val tvMinute: TextView = itemView.findViewById(R.id.tv_workhistory_minute)
+        private val tvPay: TextView = itemView.findViewById(R.id.tv_workhistory_won)
 
         fun bind(item: WorkHistoryData){
             tvMonth.text = item.month
             tvHour.text = item.hour
             tvMinute.text = item.minute
+            tvPay.text = item.pay
         }
     }
 }

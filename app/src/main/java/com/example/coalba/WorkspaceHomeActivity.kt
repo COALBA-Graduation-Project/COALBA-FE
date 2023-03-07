@@ -3,13 +3,22 @@ package com.example.coalba
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.coalba.adapter.MonthAdapter
 import com.example.coalba.adapter.ScheduleAdapter
+import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.response.AlbalistData
+import com.example.coalba.data.response.ScheduleCalendarResponseData
 import com.example.coalba.data.response.ScheduleData
+import com.example.coalba.data.response.ScheduleEachWorkspaceScheduleResponseData
 import com.example.coalba.databinding.ActivityWorkspaceHomeBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 class WorkspaceHomeActivity : AppCompatActivity() {
     // 전역 변수로 바인딩 객체 선언
@@ -19,12 +28,14 @@ class WorkspaceHomeActivity : AppCompatActivity() {
 
     lateinit var scheduleAdapter: ScheduleAdapter
     val datas = mutableListOf<ScheduleData>()
+    var storeId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 바인딩
         mBinding = ActivityWorkspaceHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        scheduleAdapter = ScheduleAdapter(this)
 
         // rv_workspacehome 리사이클러뷰는 각 월을 나타낼 리스트로서 가로로 전환하기 위하여 LinearLayoutManager의 Horizontal 속성을 준다
         val monthListManager=LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
@@ -39,15 +50,43 @@ class WorkspaceHomeActivity : AppCompatActivity() {
         // PagerSnapHelper()를 설정함으로써 한 항목씩 스크롤이 되도록 만들 수 있다.
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.rvWorkspacehome)
-        initRecycler()
 
         val data = intent.getParcelableExtra<AlbalistData>("data")
         binding.tvWorkspacehome.text = data!!.name
+        storeId = data.workspaceId
 
-        binding.ivWorkspacehomeChange.setOnClickListener {
-            val intent = Intent(this, SubstituteRequestActivity::class.java)
-            startActivity(intent)
-        }
+        // 해당 워크스페이스 홈 달력 정보 조회 서버 연동
+        RetrofitManager.scheduleService?.scheduleCalendar(storeId)?.enqueue(object:
+            Callback<ScheduleCalendarResponseData> {
+            override fun onResponse(
+                call: Call<ScheduleCalendarResponseData>,
+                response: Response<ScheduleCalendarResponseData>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("ScheduleCalendar", "success")
+                    val data2 = response.body()
+                    val num = data2!!.selectedSubPage!!.selectedScheduleList.count()
+                    if(num == 0){
+                        Toast.makeText(this@WorkspaceHomeActivity, "오늘은 휴무입니다!", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        binding.rvSchedule.adapter = scheduleAdapter
+
+                        for(i in 0..num-1){
+                            val itemdata = response.body()?.selectedSubPage?.selectedScheduleList?.get(i)
+                            datas.add(ScheduleData(itemdata!!.scheduleId, itemdata.worker!!.name, itemdata.scheduleStartTime, itemdata.scheduleEndTime, itemdata.status, itemdata.isMySchedule))
+                        }
+                        scheduleAdapter.datas = datas
+                        scheduleAdapter.notifyDataSetChanged()
+                    }
+                }else{ // 이곳은 에러 발생할 경우 실행됨
+                    Log.d("ScheduleCalendar", "fail")
+                }
+            }
+            override fun onFailure(call: Call<ScheduleCalendarResponseData>, t: Throwable) {
+                Log.d("ScheduleCalendar", "error")
+            }
+        })
         binding.ivWorkspacehomeBack.setOnClickListener {
             finish()
         }
@@ -56,18 +95,44 @@ class WorkspaceHomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    private fun initRecycler(){
-        scheduleAdapter = ScheduleAdapter(this)
-        binding.rvSchedule.adapter = scheduleAdapter
 
-        datas.apply {
-            add(ScheduleData(name = "신지연", time = "14:00-19:00"))
-            add(ScheduleData(name = "조예진", time = "15:00-21:00"))
-            add(ScheduleData(name = "김다은", time = "11:00-13:30"))
-            scheduleAdapter.datas = datas
-            scheduleAdapter.notifyDataSetChanged()
+    fun dayClick(day: String){
+        // 해당 워크스페이스 홈 해당 날짜 스케줄 조회 서버 연동
+        RetrofitManager.scheduleService?.scheduleEachWorkspaceSchedule(storeId, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, day.toInt())?.enqueue(object:
+            Callback<ScheduleEachWorkspaceScheduleResponseData> {
+            override fun onResponse(
+                call: Call<ScheduleEachWorkspaceScheduleResponseData>,
+                response: Response<ScheduleEachWorkspaceScheduleResponseData>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("ScheduleCalendarClick", "success")
+                    val data = response.body()
 
-        }
+                    datas.removeAll(datas)
+                    scheduleAdapter.notifyDataSetChanged()
+
+                    val num = data!!.selectedScheduleList.count()
+                    if(num == 0){
+                        Toast.makeText(this@WorkspaceHomeActivity, "오늘은 휴무입니다!", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        binding.rvSchedule.adapter = scheduleAdapter
+
+                        for(i in 0..num-1){
+                            val itemdata = response.body()?.selectedScheduleList?.get(i)
+                            datas.add(ScheduleData(itemdata!!.scheduleId, itemdata!!.worker!!.name, itemdata.scheduleStartTime, itemdata.scheduleEndTime, itemdata.status,itemdata.isMySchedule))
+                        }
+                        scheduleAdapter.datas = datas
+                        scheduleAdapter.notifyDataSetChanged()
+                    }
+                }else{ // 이곳은 에러 발생할 경우 실행됨
+                    Log.d("ScheduleCalendarClick", "fail")
+                }
+            }
+            override fun onFailure(call: Call<ScheduleEachWorkspaceScheduleResponseData>, t: Throwable) {
+                Log.d("ScheduleCalendarClick", "error")
+            }
+        })
     }
 
     // 액티비티가 파괴될 때..
