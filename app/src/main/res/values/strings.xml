@@ -66,6 +66,14 @@
     <string name="workspacehome_sat">토</string>
     <string name="workspacehome_day">11</string>
 
+    <!-- SubstituteRequest -->
+    <string name="substituterequest_dialog">대타 요청 수신자 한 명을 선택해주세요!</string>
+    <string name="substituterequest_putperson">대타 요청할 근무자를 선택해주세요</string>
+    <string name="substituterequest_message">대타 근무자에게 전달할 메시지를 입력해주세요</string>
+    <string name="substituterequest_date">2023-03-21</string>
+    <string name="substituterequest_cancel">요청 취소</string>
+    <string name="substituterequest_ok">대타 요청</string>
+
 
     <string-array name="workhistory_list">
         <item>2022</item>

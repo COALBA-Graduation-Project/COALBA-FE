@@ -36,7 +36,7 @@ class ScheduleAdapter(private val context: Context) : RecyclerView.Adapter<Sched
             if (item.isMySchedule == true && item.status == "BEFORE_WORK"){
                 binding.ivWorkspacehomeChange.visibility = View.VISIBLE
             }
-            itemView.setOnClickListener {
+            binding.ivWorkspacehomeChange.setOnClickListener {
                 Intent(context, SubstituteRequestActivity::class.java).apply {
                     putExtra("ForSubstitute", item)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
