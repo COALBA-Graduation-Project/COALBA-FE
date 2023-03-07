@@ -36,4 +36,12 @@ interface ScheduleService {
     // 해당 스케줄 퇴근 요청
     @PUT("staff/schedules/{scheduleId}/end")
     fun scheduleEnd(@Path("scheduleId") scheduleId: Long) : Call<ScheduleEndResponseData>
+
+    // 근무내역 및 알바비 관리 년도 리스트 조회
+    @GET("staff/schedules/reports/dates")
+    fun workhistoryDate() : Call<WorkHistoryDateResponseData>
+
+    // 해당 년도 근무내역 및 알바비 관리 리스트 조회
+    @GET("staff/schedules/reports")
+    fun workhistoryList(@Query("year") year: Int) : Call<WorkHistoryListResponseData>
 }

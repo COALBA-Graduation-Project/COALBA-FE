@@ -77,6 +77,19 @@
     <string name="substituterequest_cancel">요청 취소</string>
     <string name="substituterequest_ok">대타 요청</string>
 
+    <!-- WorkHistory -->
+    <string name="workhistory_title">근무내역 및 알바비 관리</string>
+    <string name="workhistory_month">7</string>
+    <string name="workhistory_monthtext">월</string>
+    <string name="workhistory_total_time">총 근로 시간</string>
+    <string name="workhistory_total_pay">예상 근로비</string>
+    <string name="workhistory_hour1">35</string>
+    <string name="workhistory_hour">시간</string>
+    <string name="workhistory_minute1">00</string>
+    <string name="workhistory_minute">분</string>
+    <string name="workhistory_sum">320,600</string>
+    <string name="workhistory_won">원</string>
+    <string name="workhistory_zero">30</string>
 
     <string-array name="workhistory_list">
         <item>2022</item>

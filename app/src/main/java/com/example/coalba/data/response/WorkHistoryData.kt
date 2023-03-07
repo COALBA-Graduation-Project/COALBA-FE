@@ -1,7 +1,8 @@
 package com.example.coalba.data.response
 
 data class WorkHistoryData (
-    val month : String,
-    val hour : String,
-    val minute : String
+    var month : String,
+    var hour : String,
+    var minute : String,
+    var pay : String
 )
