@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.*;
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.*
 import com.example.coalba.adapter.*
 import com.example.coalba.api.retrofit.RetrofitManager
@@ -111,13 +112,17 @@ class HomeFragment : Fragment() {
                             datas.clear() // 기존 데이터 clear
                             val num2 = data!!.selectedScheduleList.count()
                             if (num2 == 0){
-                                binding.tvHomeNoschedule.visibility = View.VISIBLE
+                                binding.tvHomeNoschedule.isVisible = true
+                                homescheduleAdapter.notifyDataSetChanged()
                             }
-                            datas.addAll(data!!.selectedScheduleList.map {schedule ->
-                                HomeScheduleData(schedule.scheduleId, schedule.workspace!!.name, schedule.scheduleStartTime, schedule.scheduleEndTime, schedule.logicalStartTime, schedule.logicalEndTime, schedule.status)
-                            }.toMutableList())
-                            // 어댑터에 변경된 데이터 적용
-                            binding.rvHomeSchedule.adapter!!.notifyItemRangeChanged(0, datas.size)
+                            else{
+                                binding.tvHomeNoschedule.isVisible = false
+                                datas.addAll(data!!.selectedScheduleList.map {schedule ->
+                                    HomeScheduleData(schedule.scheduleId, schedule.workspace!!.name, schedule.scheduleStartTime, schedule.scheduleEndTime, schedule.logicalStartTime, schedule.logicalEndTime, schedule.status)
+                                }.toMutableList())
+                                // 어댑터에 변경된 데이터 적용
+                                binding.rvHomeSchedule.adapter!!.notifyItemRangeChanged(0, datas.size)
+                            }
                         }else{ // 이곳은 에러 발생할 경우 실행됨
                             Log.d("ScheduleDate", "fail")
                         }
@@ -153,6 +158,10 @@ class HomeFragment : Fragment() {
 
                     // 스케줄 recyclerview
                     datas.clear()
+                    val num3 = data!!.selectedSubPage!!.selectedScheduleList.count()
+                    if (num3 == 0){
+                        binding.tvHomeNoschedule.isVisible = true
+                    }
                     binding.rvHomeSchedule.adapter = homescheduleAdapter
                     datas.addAll(data!!.selectedSubPage!!.selectedScheduleList.map {schedule ->
                         HomeScheduleData(schedule.scheduleId, schedule.workspace!!.name, schedule.scheduleStartTime, schedule.scheduleEndTime, schedule.logicalStartTime, schedule.logicalEndTime, schedule.status)
