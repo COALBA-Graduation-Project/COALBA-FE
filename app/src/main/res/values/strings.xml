@@ -91,16 +91,17 @@
     <string name="workhistory_won">원</string>
     <string name="workhistory_zero">30</string>
 
-    <string-array name="workhistory_list">
-        <item>2022</item>
-        <item>2021</item>
-        <item>2020</item>
-        <item>2019</item>
-        <item>2018</item>
-        <item>2017</item>
-        <item>2016</item>
-        <item>2015</item>
-    </string-array>
+    <!-- Message -->
+    <string name="message_send">보낸 쪽지</string>
+    <string name="message_receive">받은 쪽지</string>
+    <string name="message_date">01/29 16:20</string>
+    <string name="message_content">사장님!! 오늘 스케줄 나왔나요??</string>
+    <string name="message_send_title">전달 메시지</string>
+    <string name="message_send_content">전달할 메시지를 입력해주세요</string>
+    <string name="message_send_count">0</string>
+    <string name="message_send_slash">/</string>
+    <string name="message_send_limit">150</string>
+    <string name="message_send_btn">쪽지 보내기</string>
 
     <string name="name_ex">조예진</string>
     <string name="place_ex">송이커피 숙대점</string>
