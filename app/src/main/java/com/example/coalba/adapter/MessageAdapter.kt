@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coalba.R
 import com.example.coalba.data.response.MessageData
@@ -24,14 +25,15 @@ class MessageAdapter(private val context: Context): RecyclerView.Adapter<Message
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val txtType: TextView = itemView.findViewById(R.id.tv_message_title)
         private val txtDate: TextView = itemView.findViewById(R.id.tv_message_date)
-        private val txtTime: TextView = itemView.findViewById(R.id.tv_message_time)
         private val txtContent: TextView = itemView.findViewById(R.id.tv_message_content)
 
         fun bind(item: MessageData){
             txtType.text = item.type
             txtDate.text = item.date
-            txtTime.text = item.time
             txtContent.text = item.content
+            if(txtType.text == "보낸쪽지"){
+                txtType.setTextColor(getColor(context, R.color.send_message))
+            }
         }
     }
 }
