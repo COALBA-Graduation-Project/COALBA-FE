@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubstituteProcessActivity">
+
+    <ImageView
+        android:id="@+id/iv_substitute_process_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_substitute_process"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/substituteprocess_title"
+        android:textColor="@color/black"
+        android:textSize="21dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_substitute_process_back"
+        app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_back"/>
+
+    <ScrollView
+        android:id="@+id/sv_substitute_process"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_substitute_process"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_substitute_process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            android:layout_margin="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_substitute_process_profile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_emptyimg"
+                android:layout_marginStart="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_substitute_process_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/name_ex"
+                android:textSize="21dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_profile"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_profile"
+                app:layout_constraintStart_toEndOf="@id/iv_substitute_process_profile"/>
+
+            <ImageView
+                android:id="@+id/iv_substitute_process_arrow"
+                android:layout_width="28dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@id/tv_substitute_process_name"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_profile"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_profile"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_substitute_process_recvprofile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_emptyimg"
+                android:layout_marginStart="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_substitute_process_arrow" />
+
+            <TextView
+                android:id="@+id/tv_substitute_process_recvname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/base_name1"
+                android:textSize="21dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_recvprofile"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_recvprofile"
+                app:layout_constraintStart_toEndOf="@id/iv_substitute_process_recvprofile"/>
+
+            <LinearLayout
+                android:id="@+id/ll_substitute_process"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/iv_substitute_process_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@color/line"/>
+
+            <ImageView
+                android:id="@+id/iv_substitute_process_place"
+                android:layout_width="32dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_place"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_substitute_process"
+                app:layout_constraintStart_toStartOf="@id/iv_substitute_process_profile"/>
+
+            <TextView
+                android:id="@+id/tv_substitute_process_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/place_ex"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                android:textSize="17dp"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@id/iv_substitute_process_place"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_place"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_place"/>
+
+            <ImageView
+                android:id="@+id/iv_substitute_process_time"
+                android:layout_width="32dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_time"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/iv_substitute_process_place"
+                app:layout_constraintStart_toStartOf="@id/iv_substitute_process_profile"/>
+
+            <TextView
+                android:id="@+id/tv_substitute_process_starttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/message_date"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="normal"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@id/iv_substitute_process_time"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_time"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_time"/>
+
+            <TextView
+                android:id="@+id/tv_substitute_process_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/base_midtime"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="normal"
+                android:layout_marginStart="4dp"
+                app:layout_constraintStart_toEndOf="@id/tv_substitute_process_starttime"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_time"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_time"/>
+
+            <TextView
+                android:id="@+id/tv_substitute_process_endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/endtime_ex"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="normal"
+                android:layout_marginStart="4dp"
+                app:layout_constraintStart_toEndOf="@id/tv_substitute_process_to"
+                app:layout_constraintTop_toTopOf="@id/iv_substitute_process_time"
+                app:layout_constraintBottom_toBottomOf="@id/iv_substitute_process_time"/>
+
+            <TextView
+                android:id="@+id/tv_substitute_process_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_message"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_marginTop="36dp"
+                app:layout_constraintStart_toStartOf="@id/iv_substitute_process_profile"
+                app:layout_constraintTop_toBottomOf="@id/iv_substitute_process_time"/>
+
+            <EditText
+                android:id="@+id/et_substitute_process_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="16dp"
+                android:background="@drawable/bg_mypage"
+                android:text="@string/substituteprocess_content"
+                android:textSize="15dp"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:gravity="top"
+                android:enabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_substitute_process_request"/>
+
+            <Button
+                android:id="@+id/btn_substitute_process_reject"
+                android:layout_width="120dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/bg_cancelbtn"
+                android:text="@string/substituteprocess_reject"
+                android:textColor="@color/main"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/btn_substitute_process_allow"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_substitute_process_message" />
+
+            <Button
+                android:id="@+id/btn_substitute_process_allow"
+                android:layout_width="120dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/bg_basicbtn"
+                android:text="@string/substituteprocess_allow"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_substitute_process_reject"
+                app:layout_constraintTop_toBottomOf="@id/et_substitute_process_message" />
+
+            <Button
+                android:id="@+id/btn_substitute_process_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/bg_basicbtn"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/substituterequest_cancel"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_substitute_process_message" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

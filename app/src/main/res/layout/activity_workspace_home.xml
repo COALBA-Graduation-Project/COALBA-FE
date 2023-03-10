@@ -56,63 +56,14 @@
             android:paddingBottom="40dp"
             android:layout_margin="16dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_workspacehome_box"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:background="@drawable/bg_mypage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tv_workspacehome_notice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="공지사항"
-                    android:textColor="@color/black"
-                    android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:layout_margin="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/tv_workspacehome_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="더보기"
-                    android:textColor="#06B563"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:layout_margin="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/tv_workspacehome_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="설거지는 바로바로 해주세요"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="@id/tv_workspacehome_notice"
-                    app:layout_constraintTop_toBottomOf="@id/tv_workspacehome_notice"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_workspacehome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:overScrollMode="never"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_workspacehome_box"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <LinearLayout
                 android:id="@+id/ll_workspacehome"

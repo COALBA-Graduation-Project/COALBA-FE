@@ -77,6 +77,18 @@
     <string name="substituterequest_cancel">요청 취소</string>
     <string name="substituterequest_ok">대타 요청</string>
 
+    <!-- Substitute -->
+    <string name="substitut_year">2023</string>
+    <string name="substitut_year2">년</string>
+    <string name="substitut_month">2</string>
+    <string name="substitut_month2">월</string>
+
+    <!-- SubstituteProcess -->
+    <string name="substituteprocess_title">대타근무 요청 처리</string>
+    <string name="substituteprocess_content">오늘 시험이 있어서요...대타 부탁드려요!</string>
+    <string name="substituteprocess_reject">요청 거절</string>
+    <string name="substituteprocess_allow">요청 수락</string>
+
     <!-- WorkHistory -->
     <string name="workhistory_title">근무내역 및 알바비 관리</string>
     <string name="workhistory_month">7</string>
