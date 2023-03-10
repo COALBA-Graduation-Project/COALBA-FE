@@ -125,8 +125,6 @@ class LoginActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) { //성공 시
                         val result = response.body()
-                        Log.e("error 잡자","accessToken = ${result?.accessToken}")
-                        Log.e("error 잡자","refreshToken = ${result?.refreshToken}")
 
                         // 백 서버로부터 발급받은 token 내부 저장소에 저장
                         CoalbaApplication.prefs.accessToken = result?.accessToken

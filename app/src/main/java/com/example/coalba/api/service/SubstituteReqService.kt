@@ -1,10 +1,7 @@
 package com.example.coalba.api.service
 
 import com.example.coalba.data.request.SubstituteSendData
-import com.example.coalba.data.response.SubstituteDetailResponseData
-import com.example.coalba.data.response.SubstituteFromResponseData
-import com.example.coalba.data.response.SubstitutePossibleResponseData
-import com.example.coalba.data.response.SubstituteToResponseData
+import com.example.coalba.data.response.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,4 +26,16 @@ interface SubstituteReqService {
     // 대타근무 요청 생성 (나의 스케줄인 경우에만)
     @POST("staff/substituteReqs")
     fun substituteSend(@Query("scheduleId") scheduleId: Long, @Query("receiverId") receiverId: Long, @Body data : SubstituteSendData) : Call<Void>
+
+    // 대타근무 요청 취소 (from. 나, 상대가 수락 아직 X)
+    @PUT("staff/substituteReqs/{substituteReqId}/cancel")
+    fun substituteCancel(@Path("substituteReqId") substituteReqId: Long) : Call<Void>
+
+    // 대타근무 요청 수락
+    @PUT("staff/substituteReqs/{substituteReqId}/accept")
+    fun substituteAccept(@Path("substituteReqId") substituteReqId: Long) : Call<Void>
+
+    // 대타근무 요청 거절
+    @PUT("staff/substituteReqs/{substituteReqId}/reject")
+    fun substituteReject(@Path("substituteReqId") substituteReqId: Long) : Call<Void>
 }
