@@ -1,10 +1,12 @@
 package com.example.coalba
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.coalba.adapter.MessageAdapter
 import com.example.coalba.api.retrofit.RetrofitManager
@@ -25,6 +27,24 @@ class MessageDetailActivity : AppCompatActivity() {
     lateinit var messageAdapter: MessageAdapter
     val datas = mutableListOf<MessageData>()
     var storeId : Long = 0
+
+    // 쪽지보내기 버튼 클릭 시 MessageSendActivity 화면 시작하고 MessageSendActivity finish 후 결과값 받아와서 처리
+    // 이전 onAcitivityResult 역할과 비슷, 해당 메소드 deprecated 되어서 대신 사용
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        when (it.resultCode) {
+            Activity.RESULT_OK -> {
+                val responseData = it.data!!.getParcelableExtra<MessagesResponseData>("responseData")
+                //responseData는 워크스페이스 등록 api 호출 후 응답 데이터
+                Log.d("responseData =", responseData.toString())
+                datas.clear()
+                responseData!!.messageList.forEach { message ->
+                    datas.add(MessageData(message.sendingOrReceiving, message.createDate, message.content))
+                }
+                binding.rvMessage.adapter?.notifyItemRangeChanged(0, responseData.messageList.count())
+                //adapter에게 데이터 변경되었다는 것 알림
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +94,7 @@ class MessageDetailActivity : AppCompatActivity() {
         binding.ivMessage.setOnClickListener {
             val intent = Intent(this, MessageSendActivity::class.java)
             intent.putExtra("workspaceID", storeId)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
     }
 }
