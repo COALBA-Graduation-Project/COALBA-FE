@@ -1,13 +1,13 @@
 package com.example.coalba.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.coalba.MessageDetailActivity
 import com.example.coalba.R
 import com.example.coalba.SubstituteDetailActivity
 import com.example.coalba.SubstituteProcessActivity

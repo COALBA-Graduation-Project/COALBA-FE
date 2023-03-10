@@ -27,8 +27,9 @@ class SubstituteSecondTabFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        substituteSecondList.clear()
         // 내가 받은 대타근무 요청 관리 리스트 조회(to. 나) 서버 연동
         RetrofitManager.substituteReqService?.substituteTo()?.enqueue(object:
             Callback<SubstituteToResponseData> {
