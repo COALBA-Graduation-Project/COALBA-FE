@@ -16,5 +16,5 @@ interface MessageService {
 
     // 해당 워크스페이스에 쪽지 보내기
     @POST("staff/messages")
-    fun messageSend(@Query("workspaceId") workspaceId: Long,  @Body data : MessageSendData) : Call<Void>
+    fun messageSend(@Query("workspaceId") workspaceId: Long,  @Body data : MessageSendData) : Call<MessagesResponseData>
 }

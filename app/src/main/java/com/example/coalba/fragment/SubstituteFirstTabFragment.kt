@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coalba.adapter.SubstituteFirstAdapter
 import com.example.coalba.adapter.SubstituteFirstYearmonthAdapter
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.response.SubstituteFirstData
 import com.example.coalba.data.response.SubstituteFirstYearmonthData
 import com.example.coalba.data.response.SubstituteFromResponseData
 import com.example.coalba.databinding.FragmentSubstituteFirstTabBinding
+import com.example.coalba.databinding.ItemSubstituteFirstBinding
+import com.example.coalba.databinding.ItemSubstituteFirstYearmonthBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,8 +30,10 @@ class SubstituteFirstTabFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    // 다시 앱으로 돌아올 때 무조건 호출!
+    override fun onResume() {
+        super.onResume()
+        substituteFirstList.clear()
         // 내가 보낸 대타근무 요청 관리 리스트 조회(from. 나) 서버 연동
         RetrofitManager.substituteReqService?.substituteFrom()?.enqueue(object:
             Callback<SubstituteFromResponseData> {
@@ -44,9 +49,9 @@ class SubstituteFirstTabFragment : Fragment() {
                     substituteFirstList.addAll(
                         data!!.totalSubstituteReqList.map {yearmonth ->
                             SubstituteFirstYearmonthData(yearmonth.year.toString(), yearmonth.month.toString(),
-                            yearmonth.substituteReqList.map { datas ->
-                                SubstituteFirstData(datas.substituteReqId, datas.receiverImageUrl, datas.receiverName, datas.workspaceName, datas.startDateTime, datas.endDateTime, datas.status)
-                            }.toMutableList())
+                                yearmonth.substituteReqList.map { datas ->
+                                    SubstituteFirstData(datas.substituteReqId, datas.receiverImageUrl, datas.receiverName, datas.workspaceName, datas.startDateTime, datas.endDateTime, datas.status)
+                                }.toMutableList())
                         }
                     )
                     binding.rvSubstituteFirstYearmonth.apply {

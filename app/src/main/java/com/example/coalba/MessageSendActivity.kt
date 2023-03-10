@@ -1,5 +1,6 @@
 package com.example.coalba
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.widget.Toast
 import com.example.coalba.adapter.MessageAdapter
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.request.MessageSendData
+import com.example.coalba.data.response.MessagesResponseData
 import com.example.coalba.databinding.ActivityMessageDetailBinding
 import com.example.coalba.databinding.ActivityMessageSendBinding
 import retrofit2.Call
@@ -50,16 +52,19 @@ class MessageSendActivity : AppCompatActivity() {
         binding.btnMessagesend.setOnClickListener {
             val messageData = MessageSendData(binding.etMessagesend.text.toString())
             RetrofitManager.messageService?.messageSend(workspaceId,messageData)?.enqueue(object:
-                Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Callback<MessagesResponseData> {
+                override fun onResponse(call: Call<MessagesResponseData>, response: Response<MessagesResponseData>) {
                     if(response.isSuccessful){
                         Log.d("MessageSend", "success")
+                        val intent = Intent(this@MessageSendActivity, MessageDetailActivity::class.java)
+                            .putExtra("responseData", response.body())
+                        setResult(RESULT_OK, intent)
                         finish()
                     }else{ // 이곳은 에러 발생할 경우 실행됨
                         Log.d("MessageSend", "fail")
                     }
                 }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<MessagesResponseData>, t: Throwable) {
                     Log.d("MessageSend", "error")
                 }
             })
