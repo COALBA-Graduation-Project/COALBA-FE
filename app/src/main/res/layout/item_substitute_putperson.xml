@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="@string/base_name1"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/iv_substitute_putperson"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import com.example.coalba.adapter.SubstituteAddAdapter
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.request.SubstituteSendData
@@ -25,6 +26,8 @@ class SubstituteRequestActivity : AppCompatActivity() {
     var albaId : Long = 0
     lateinit var substituteAdapter: SubstituteAddAdapter
     val datas = mutableListOf<SubstituteAddPersonData>()
+    private var isPersonChk = false // 대타근무 요청할 알바생이 추가되었는지
+    private var isBtnActivated = false // 버튼 활성화 되었는지 여부, true면 활성화, false면 비활성화
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,8 @@ class SubstituteRequestActivity : AppCompatActivity() {
         val data = intent.getParcelableExtra<ScheduleData>("ForSubstitute")
         sId = data!!.scheduleId
 
+        chkInputData()
+        onContentAdd()
         // 해당 스케줄 요약 조회 서버 연동
         RetrofitManager.scheduleService?.scheduleSummary(sId)?.enqueue(object:
             Callback<ScheduleSummaryResponseData> {
@@ -61,6 +66,9 @@ class SubstituteRequestActivity : AppCompatActivity() {
         binding.ivSubstituteRequestBack.setOnClickListener {
             finish()
         }
+        binding.btnSubstituteRequestCancel.setOnClickListener {
+            finish()
+        }
         // 대타근무 요청 parttime person pick
         val putPersonDialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
         substituteAdapter = SubstituteAddAdapter(this, object: SubstituteAddAdapter.PossiblePersonListener{
@@ -73,6 +81,7 @@ class SubstituteRequestActivity : AppCompatActivity() {
                     text = name
                     setTextColor(getColor(R.color.black))
                 }
+                isPersonChk = true
                 albaId = staffId
                 putPersonDialog.dismiss()
             }
@@ -94,6 +103,7 @@ class SubstituteRequestActivity : AppCompatActivity() {
                         if (num == 0) {
                             Toast.makeText(this@SubstituteRequestActivity, "가능한 알바생이 없습니다!", Toast.LENGTH_SHORT).show()
                         } else {
+                            datas.clear()
                             for (i in 0..num - 1) {
                                 val itemdata = response.body()?.staffList?.get(i)
                                 datas.add(SubstituteAddPersonData(itemdata!!.staffId, itemdata.imageUrl, itemdata.name))
@@ -115,7 +125,6 @@ class SubstituteRequestActivity : AppCompatActivity() {
             putPersonDialog.setContentView(sheetView.root)
             putPersonDialog.show()
         }
-        // todo: 모든 값이 입력되었을때 버튼 색 변경 및 활성화
 
         // 대타근무 요청 생성 (나의 스케줄인 경우에만)
         binding.btnSubstituteRequest.setOnClickListener {
@@ -134,6 +143,23 @@ class SubstituteRequestActivity : AppCompatActivity() {
                     Log.d("SubstituteSend", "error")
                 }
             })
+        }
+    }
+    private fun onContentAdd(){
+        binding.etSubstituteRequestMessage.addTextChangedListener {
+            chkBtnActivate()
+        }
+    }
+    private fun chkInputData() = binding.etSubstituteRequestMessage.text.isNotEmpty() && isPersonChk
+
+    private fun chkBtnActivate() {
+        // 버튼이 활성화되어 있지 않은 상황에서 확인
+        if (!isBtnActivated && chkInputData()) {
+            isBtnActivated = !isBtnActivated
+            binding.btnSubstituteRequest.apply {
+                isEnabled = true
+                setBackgroundResource(R.drawable.bg_basicbtn)
+            }
         }
     }
 }
