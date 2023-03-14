@@ -65,6 +65,11 @@ class ProfileModifyActivity : AppCompatActivity() {
         // 바인딩
         mBinding = ActivityProfileModifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 프로필 수정 시 기존 프로필 조회 후 수정
+        val prevImgUrl = intent.getStringExtra("prevImageUrl")
+        Glide.with(this).load(prevImgUrl).into(binding.ivProfile)
+
         binding.ivRegisterCamera.setOnClickListener {
             selectGallery()
         }
@@ -96,15 +101,9 @@ class ProfileModifyActivity : AppCompatActivity() {
                     // 네트워크 통신에 성공한 경우
                     if (response.isSuccessful) {
                         Log.d("ProfileEdit", "success")
-                        // 마이페이지화면으로 이동 => todo: 마이페이지 데이터 값 변경되도록 수정
                         finish()
 
                     }else { // 이곳은 에러 발생할 경우 실행됨
-                        val data1 = response.code()
-                        Log.d("status code", data1.toString())
-                        val data2 = response.headers()
-                        Log.d("header", data2.toString())
-                        Log.d("server err", response.errorBody()?.string().toString())
                         Log.d("ProfileEdit", "fail")
                     }
                 }

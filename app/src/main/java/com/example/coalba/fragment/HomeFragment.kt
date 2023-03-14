@@ -161,6 +161,8 @@ class HomeFragment : Fragment() {
 
         calendarAdapter = WeekCalendarAdapter(calendarList, object:WeekCalendarAdapter.HomeDayClickListener {
             override fun click(year: Int, month: Int, day: Int) {
+                binding.tvHomeDate.text = "${year}년 ${month}월" //날짜 클릭 시 년월 텍스트 변경
+
                 // 홈 해당 날짜 스케줄 조회 서버 연동
                 RetrofitManager.scheduleService?.scheduleDate(year,month,day)?.enqueue(object:
                     Callback<ScheduleDateResponseData> {
@@ -173,19 +175,19 @@ class HomeFragment : Fragment() {
                             val data = response.body()
 
                             datas.clear() // 기존 데이터 clear
+                            homescheduleAdapter.notifyDataSetChanged()
                             val num2 = data!!.selectedScheduleList.count()
                             if (num2 == 0){
                                 binding.tvHomeNoschedule.isVisible = true
-                                homescheduleAdapter.notifyDataSetChanged()
                             }
                             else{
                                 binding.tvHomeNoschedule.isVisible = false
-                                datas.addAll(data!!.selectedScheduleList.map {schedule ->
+                                datas.addAll(data.selectedScheduleList.map {schedule ->
                                     HomeScheduleData(schedule.scheduleId, schedule.workspace!!.name, schedule.scheduleStartTime, schedule.scheduleEndTime, schedule.logicalStartTime, schedule.logicalEndTime, schedule.status)
                                 }.toMutableList())
-                                // 어댑터에 변경된 데이터 적용
-                                binding.rvHomeSchedule.adapter!!.notifyItemRangeChanged(0, datas.size)
                             }
+                            // 어댑터에 변경된 데이터 적용
+                            binding.rvHomeSchedule.adapter!!.notifyItemRangeChanged(0, datas.size)
                         }else{ // 이곳은 에러 발생할 경우 실행됨
                             Log.d("ScheduleDate", "fail")
                         }
