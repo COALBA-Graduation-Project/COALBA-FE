@@ -29,15 +29,6 @@
         app:layout_constraintTop_toTopOf="@id/iv_workspacehome_back"
         app:layout_constraintBottom_toBottomOf="@id/iv_workspacehome_back"/>
 
-    <ImageView
-        android:id="@+id/iv_workspacehome_messagebox"
-        android:layout_width="28dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_messagebox"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <ScrollView
         android:id="@+id/sv_workspacehome"
         android:layout_width="match_parent"

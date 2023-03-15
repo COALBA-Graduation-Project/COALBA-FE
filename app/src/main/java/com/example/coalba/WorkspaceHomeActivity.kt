@@ -90,10 +90,6 @@ class WorkspaceHomeActivity : AppCompatActivity() {
         binding.ivWorkspacehomeBack.setOnClickListener {
             finish()
         }
-        binding.ivWorkspacehomeMessagebox.setOnClickListener {
-            val intent = Intent(this, MessageDetailActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     fun dayClick(day: String){
@@ -108,7 +104,7 @@ class WorkspaceHomeActivity : AppCompatActivity() {
                     Log.d("ScheduleCalendarClick", "success")
                     val data = response.body()
 
-                    datas.removeAll(datas)
+                    datas.clear()
                     scheduleAdapter.notifyDataSetChanged()
 
                     val num = data!!.selectedScheduleList.count()

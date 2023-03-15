@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.coalba.ProfileModifyActivity
-import com.example.coalba.R
-import com.example.coalba.SubstituteActivity
-import com.example.coalba.WorkHistoryActivity
+import com.example.coalba.*
+import com.example.coalba.api.jwt.CoalbaApplication
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.response.ProfileLookResponseData
 import com.example.coalba.databinding.FragmentMypageBinding
@@ -48,6 +46,13 @@ class MypageFragment : Fragment() {
         binding.btnMypage.setOnClickListener {
             val intent = Intent(requireContext(), ProfileModifyActivity::class.java)
             intent.putExtra("prevImageUrl", sendData)
+            startActivity(intent)
+        }
+        binding.tvMypageLogout.setOnClickListener {
+            CoalbaApplication.prefs.accessToken = null
+            CoalbaApplication.prefs.refreshToken = null
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
         super.onViewCreated(view, savedInstanceState)

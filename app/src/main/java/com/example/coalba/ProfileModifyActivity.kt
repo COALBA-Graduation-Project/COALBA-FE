@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -80,37 +81,43 @@ class ProfileModifyActivity : AppCompatActivity() {
         binding.btnProfileFinish.setOnClickListener {
             Log.d("profileEdit", "시작")
             Log.d("datavalue", "multipart값=> " + imageWideUri)
-            imageFile = File(getRealPathFromURI(imageWideUri!!))
-            // 서버로 보내기 위해 RequestBody객체로 변환
-            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile!!)
-            val body =
-                MultipartBody.Part.createFormData("imageFile", imageFile!!.name, requestFile)
-            // String 값에 "" 없애기
-            val sendData = intent.getIntExtra("prevImageUrl", 0)
-            val jsonObj = JSONObject()
-            jsonObj.put("realName", binding.etProfileName.text)
-            jsonObj.put("phoneNumber", binding.etProfilePhonenumber.text)
-            jsonObj.put("birthDate", binding.etProfileBirth.text)
-            jsonObj.put("prevImageUrl", sendData)
-            val body2 = RequestBody.create("application/json".toMediaTypeOrNull(), jsonObj.toString())
-            // 현재 사용자의 정보를 받아올 것을 명시
-            // 서버 통신은 I/O 작업이므로 비동기적으로 받아올 Callback 내부 코드는 나중에 데이터를 받아오고 실행
-            RetrofitManager.profileService?.profileEdit(body2,body)?.enqueue(object :
-                Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    // 네트워크 통신에 성공한 경우
-                    if (response.isSuccessful) {
-                        Log.d("ProfileEdit", "success")
-                        finish()
 
-                    }else { // 이곳은 에러 발생할 경우 실행됨
-                        Log.d("ProfileEdit", "fail")
+            if (imageWideUri == null){
+                Toast.makeText(this, "프로필 이미지를 추가해주세요", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                imageFile = File(getRealPathFromURI(imageWideUri!!))
+                // 서버로 보내기 위해 RequestBody객체로 변환
+                val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile!!)
+                val body =
+                    MultipartBody.Part.createFormData("imageFile", imageFile!!.name, requestFile)
+                // String 값에 "" 없애기
+                val sendData = intent.getIntExtra("prevImageUrl", 0)
+                val jsonObj = JSONObject()
+                jsonObj.put("realName", binding.etProfileName.text)
+                jsonObj.put("phoneNumber", binding.etProfilePhonenumber.text)
+                jsonObj.put("birthDate", binding.etProfileBirth.text)
+                jsonObj.put("prevImageUrl", sendData)
+                val body2 = RequestBody.create("application/json".toMediaTypeOrNull(), jsonObj.toString())
+                // 현재 사용자의 정보를 받아올 것을 명시
+                // 서버 통신은 I/O 작업이므로 비동기적으로 받아올 Callback 내부 코드는 나중에 데이터를 받아오고 실행
+                RetrofitManager.profileService?.profileEdit(body2,body)?.enqueue(object :
+                    Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        // 네트워크 통신에 성공한 경우
+                        if (response.isSuccessful) {
+                            Log.d("ProfileEdit", "success")
+                            finish()
+
+                        }else { // 이곳은 에러 발생할 경우 실행됨
+                            Log.d("ProfileEdit", "fail")
+                        }
                     }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.d("ProfileEdit", "error!")
-                }
-            })
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Log.d("ProfileEdit", "error!")
+                    }
+                })
+            }
         }
     }
     // 이미지 실제 경로 반환
