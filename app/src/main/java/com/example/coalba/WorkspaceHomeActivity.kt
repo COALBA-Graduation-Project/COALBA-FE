@@ -67,7 +67,7 @@ class WorkspaceHomeActivity : AppCompatActivity() {
                     val data2 = response.body()
                     val num = data2!!.selectedSubPage!!.selectedScheduleList.count()
                     if(num == 0){
-                        Toast.makeText(this@WorkspaceHomeActivity, "오늘은 휴무입니다!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@WorkspaceHomeActivity, "오늘은 스케줄이 없습니다", Toast.LENGTH_SHORT).show()
                     }
                     else{
                         binding.rvSchedule.adapter = scheduleAdapter
@@ -90,10 +90,6 @@ class WorkspaceHomeActivity : AppCompatActivity() {
         binding.ivWorkspacehomeBack.setOnClickListener {
             finish()
         }
-        binding.ivWorkspacehomeMessagebox.setOnClickListener {
-            val intent = Intent(this, MessageDetailActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     fun dayClick(day: String){
@@ -108,12 +104,12 @@ class WorkspaceHomeActivity : AppCompatActivity() {
                     Log.d("ScheduleCalendarClick", "success")
                     val data = response.body()
 
-                    datas.removeAll(datas)
+                    datas.clear()
                     scheduleAdapter.notifyDataSetChanged()
 
                     val num = data!!.selectedScheduleList.count()
                     if(num == 0){
-                        Toast.makeText(this@WorkspaceHomeActivity, "오늘은 휴무입니다!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@WorkspaceHomeActivity, "오늘은 스케줄이 없습니다", Toast.LENGTH_SHORT).show()
                     }
                     else{
                         binding.rvSchedule.adapter = scheduleAdapter

@@ -22,20 +22,26 @@ class HomeSchduleAdapter(private val context: Context, private val startClickLis
     }
 
     inner class ViewHolder(val binding: ItemHomeScheduleBinding) : RecyclerView.ViewHolder(binding.root){
+        private val comeBtn : Button = itemView.findViewById(R.id.btn_home_schedule_come)
+        private val leaveBtn : Button = itemView.findViewById(R.id.btn_home_schedule_leave)
         fun bind(item: HomeScheduleData){
             with(binding){
                 if (item.logicalStartTime == null){
                     tvHomeScheduleStarttime.text = item.starttime // 출근 전일 때에는 스케줄 시작 시간
                 }else{
                     tvHomeScheduleStarttime.text = item.logicalStartTime
-                    if (item.state == "ON_DUTY") tvHomeScheduleStarttime.setTextColor(ContextCompat.getColor(context, R.color.main)) //근무 중
+                    // 이미 출근했을 때는 출근 버튼 비활성화
+                    comeBtn.setBackgroundResource(R.drawable.bg_notworkbtn)
+                    if (item.logicalStartTime == item.starttime) tvHomeScheduleStarttime.setTextColor(ContextCompat.getColor(context, R.color.main)) //근무 중
                     else tvHomeScheduleStarttime.setTextColor(ContextCompat.getColor(context, R.color.refuse)) //지각
                 }
                 if (item.logicalEndTime == null){
                     tvHomeScheduleEndtime.text = item.endtime // 퇴근 전일 때에는 스케줄 종료 시간
                 }else{
                     tvHomeScheduleEndtime.text = item.logicalEndTime
-                    if (item.state == "SUCCESS" || item.logicalEndTime == item.endtime) tvHomeScheduleEndtime.setTextColor(ContextCompat.getColor(context, R.color.main)) //정상 퇴근
+                    // 이미 퇴근했을 때는 퇴근 버튼 비활성화
+                    leaveBtn.setBackgroundResource(R.drawable.bg_notworkbtn)
+                    if (item.logicalEndTime == item.endtime) tvHomeScheduleEndtime.setTextColor(ContextCompat.getColor(context, R.color.main)) //정상 퇴근
                     else tvHomeScheduleEndtime.setTextColor(ContextCompat.getColor(context, R.color.refuse)) //조기 퇴근
                 }
                 tvHomeScheduleWorkname.text = item.workname
@@ -48,7 +54,7 @@ class HomeSchduleAdapter(private val context: Context, private val startClickLis
                 }
 
                 btnHomeScheduleCome.setOnClickListener {
-                    (context as MainActivity).detectBeacon()
+                    // (context as MainActivity).detectBeacon()
                     startClickListener.click1(datas[position].scheduleId, position)
                 }
                 btnHomeScheduleLeave.setOnClickListener {

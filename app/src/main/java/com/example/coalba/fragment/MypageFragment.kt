@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.coalba.ProfileModifyActivity
-import com.example.coalba.R
-import com.example.coalba.SubstituteActivity
-import com.example.coalba.WorkHistoryActivity
+import com.example.coalba.*
+import com.example.coalba.api.jwt.CoalbaApplication
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.response.ProfileLookResponseData
 import com.example.coalba.databinding.FragmentMypageBinding
@@ -50,21 +48,28 @@ class MypageFragment : Fragment() {
             intent.putExtra("prevImageUrl", sendData)
             startActivity(intent)
         }
+        binding.tvMypageLogout.setOnClickListener {
+            CoalbaApplication.prefs.accessToken = null
+            CoalbaApplication.prefs.refreshToken = null
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+        super.onViewCreated(view, savedInstanceState)
+    }
 
+    override fun onResume() {
+        super.onResume()
         // 프로필 조회 서버 연동
         RetrofitManager.profileService?.profileLook()?.enqueue(object:
             Callback<ProfileLookResponseData> {
-            override fun onResponse(
-                call: Call<ProfileLookResponseData>,
-                response: Response<ProfileLookResponseData>
-            ) {
+            override fun onResponse(call: Call<ProfileLookResponseData>, response: Response<ProfileLookResponseData>) {
                 if(response.isSuccessful){
                     Log.d("ProfileLook", "success")
                     val data = response.body()
                     binding.tvMypageName.text = data!!.realName
                     sendData = data!!.imageUrl
-                    Glide.with(this@MypageFragment).load(data!!.imageUrl).into(binding.ivMypageProfile)
-
+                    Glide.with(this@MypageFragment).load(data.imageUrl).into(binding.ivMypageProfile)
                 }else{
                     // 이곳은 에러 발생할 경우 실행됨
                     Log.d("ProfileLook", "fail")
@@ -74,6 +79,5 @@ class MypageFragment : Fragment() {
                 Log.d("ProfileLook", "error")
             }
         })
-        super.onViewCreated(view, savedInstanceState)
     }
 }
