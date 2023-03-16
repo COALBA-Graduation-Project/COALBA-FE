@@ -73,7 +73,6 @@ class ProfileRegisterActivity : AppCompatActivity() {
         // 프로필 등록 서버 연동
         binding.btnRegisterFinish.setOnClickListener {
             Log.d("profileRegister", "시작")
-            Log.d("datavalue", "multipart값=> " + imageWideUri)
             if (imageWideUri == null){
                 Toast.makeText(this, "프로필 이미지를 추가해주세요", Toast.LENGTH_SHORT).show()
             }
@@ -99,6 +98,7 @@ class ProfileRegisterActivity : AppCompatActivity() {
                             // 메인화면
                             val intent = Intent(this@ProfileRegisterActivity, MainActivity::class.java)
                             startActivity(intent)
+                            finish()
                         }else { // 이곳은 에러 발생할 경우 실행됨
                             Log.d("ProfileRegister", "fail")
                         }

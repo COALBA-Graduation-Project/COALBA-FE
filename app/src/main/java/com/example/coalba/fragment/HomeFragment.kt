@@ -56,12 +56,12 @@ class HomeFragment : Fragment() {
         (requireContext() as MainActivity).detectBeacon(
             object: OnBeaconListener {
                 override fun startSchedule() {
+                    startProgressDialog.dismiss()
                     RetrofitManager.scheduleService?.scheduleStart(scheduleID1)?.enqueue(object:
                         Callback<ScheduleStartResponseData> {
                         override fun onResponse(call: Call<ScheduleStartResponseData>, response: Response<ScheduleStartResponseData>) {
                             if(response.isSuccessful){
                                 Log.d("ScheduleStart", "success")
-                                startProgressDialog.dismiss()
 
                                 val data = response.body()
                                 datas[pos1].logicalStartTime = data!!.logicalStartTime
