@@ -121,6 +121,43 @@
                 android:background="@drawable/bg_mypage"
                 app:layout_constraintTop_toBottomOf="@id/tv_substitute_request_message"/>
 
+            <TextView
+                android:id="@+id/tv_messagesend_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                android:text="@string/message_send_count"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintEnd_toStartOf="@id/tv_messagesend_slash"
+                app:layout_constraintBottom_toBottomOf="@id/et_substitute_request_message"/>
+
+            <TextView
+                android:id="@+id/tv_messagesend_slash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                android:text="@string/message_send_slash"
+                app:layout_constraintEnd_toStartOf="@id/tv_messagesend_limit"
+                app:layout_constraintTop_toTopOf="@id/tv_messagesend_count"
+                app:layout_constraintBottom_toBottomOf="@id/tv_messagesend_count"/>
+
+            <TextView
+                android:id="@+id/tv_messagesend_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                android:text="@string/message_send_limit"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_messagesend_count"
+                app:layout_constraintBottom_toBottomOf="@id/tv_messagesend_count"/>
+
             <LinearLayout
                 android:id="@+id/ll_substitute_request"
                 android:layout_width="0dp"

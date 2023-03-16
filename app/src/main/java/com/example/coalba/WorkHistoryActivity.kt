@@ -52,7 +52,6 @@ class WorkHistoryActivity : AppCompatActivity() {
 
                     for(i in 0..num2-1){
                         val itemdata = response.body()?.yearList?.get(i)
-                        Log.d("responsevalue", "itemdata1_response 값 => "+ itemdata)
                         yearArray = yearArray.plus(itemdata!!.toString() + "년")
                     }
                     // year spinner
@@ -84,7 +83,6 @@ class WorkHistoryActivity : AppCompatActivity() {
                                             binding.rvWorkhistory.adapter = workhistoryAdapter
                                             for(i in 0..num3-1){
                                                 val itemdata = response.body()?.workReportList?.get(i)
-                                                Log.d("responsevalue", "itemdata1_response 값 => "+ itemdata)
 
                                                 datas.add(WorkHistoryData(month = itemdata!!.month.toString(), hour=itemdata!!.totalWorkTimeHour.toString(), minute = itemdata!!.totalWorkTimeMin.toString(), pay = itemdata!!.totalWorkPay))
                                             }
