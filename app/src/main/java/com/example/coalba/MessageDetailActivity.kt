@@ -28,6 +28,7 @@ class MessageDetailActivity : AppCompatActivity() {
     val datas = mutableListOf<MessageData>()
     var storeId : Long = 0
 
+    /*
     // 쪽지보내기 버튼 클릭 시 MessageSendActivity 화면 시작하고 MessageSendActivity finish 후 결과값 받아와서 처리
     // 이전 onAcitivityResult 역할과 비슷, 해당 메소드 deprecated 되어서 대신 사용
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -44,7 +45,7 @@ class MessageDetailActivity : AppCompatActivity() {
                 //adapter에게 데이터 변경되었다는 것 알림
             }
         }
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,19 @@ class MessageDetailActivity : AppCompatActivity() {
         binding.tvMessageName.text = data!!.name
         storeId = data.workspaceId
 
+        binding.ivMessageBack.setOnClickListener {
+            finish()
+        }
+        binding.ivMessage.setOnClickListener {
+            val intent = Intent(this, MessageSendActivity::class.java)
+            intent.putExtra("workspaceID", storeId)
+            startActivity(intent)
+            //startForResult.launch(intent)
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        datas.clear()
         // 해당 워크스페이스 쪽지함 내 메시지 리스트 조회 (최신순)
         RetrofitManager.messageService?.messages(storeId)?.enqueue(object:
             Callback<MessagesResponseData> {
@@ -87,14 +101,5 @@ class MessageDetailActivity : AppCompatActivity() {
                 Log.d("Messages", "error")
             }
         })
-
-        binding.ivMessageBack.setOnClickListener {
-            finish()
-        }
-        binding.ivMessage.setOnClickListener {
-            val intent = Intent(this, MessageSendActivity::class.java)
-            intent.putExtra("workspaceID", storeId)
-            startForResult.launch(intent)
-        }
     }
 }

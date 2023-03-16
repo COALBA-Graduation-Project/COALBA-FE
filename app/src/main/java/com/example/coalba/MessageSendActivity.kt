@@ -56,9 +56,6 @@ class MessageSendActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<MessagesResponseData>, response: Response<MessagesResponseData>) {
                     if(response.isSuccessful){
                         Log.d("MessageSend", "success")
-                        val intent = Intent(this@MessageSendActivity, MessageDetailActivity::class.java)
-                            .putExtra("responseData", response.body())
-                        setResult(RESULT_OK, intent)
                         finish()
                     }else{ // 이곳은 에러 발생할 경우 실행됨
                         Log.d("MessageSend", "fail")

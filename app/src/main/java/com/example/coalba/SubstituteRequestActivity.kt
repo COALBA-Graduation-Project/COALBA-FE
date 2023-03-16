@@ -2,6 +2,8 @@ package com.example.coalba
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -10,7 +12,6 @@ import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.request.SubstituteSendData
 import com.example.coalba.data.response.*
 import com.example.coalba.databinding.ActivitySubstituteRequestBinding
-import com.example.coalba.databinding.ActivityWorkspaceHomeBinding
 import com.example.coalba.databinding.DialogSubstitutePersonBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
@@ -69,6 +70,25 @@ class SubstituteRequestActivity : AppCompatActivity() {
         binding.btnSubstituteRequestCancel.setOnClickListener {
             finish()
         }
+
+        binding.etSubstituteRequestMessage.addTextChangedListener(object : TextWatcher {
+            var maxText = ""
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (binding.etSubstituteRequestMessage.length() > 150){
+                    Toast.makeText(this@SubstituteRequestActivity, "최대 150자까지 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+                    binding.etSubstituteRequestMessage.setText(maxText)
+                    binding.etSubstituteRequestMessage.setSelection(binding.etSubstituteRequestMessage.length())
+                    binding.tvMessagesendCount.setText("${binding.etSubstituteRequestMessage.length()}")
+                }
+                else{
+                    binding.tvMessagesendCount.setText("${binding.etSubstituteRequestMessage.length()}")
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
         // 대타근무 요청 parttime person pick
         val putPersonDialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
         substituteAdapter = SubstituteAddAdapter(this, object: SubstituteAddAdapter.PossiblePersonListener{
