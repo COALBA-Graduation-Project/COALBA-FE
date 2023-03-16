@@ -1,6 +1,8 @@
 package com.example.coalba.fragment
 
 import android.app.AlertDialog
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +14,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.*
 import com.example.coalba.MainActivity
+import com.example.coalba.R
 import com.example.coalba.adapter.*
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.response.*
@@ -45,6 +48,10 @@ class HomeFragment : Fragment() {
 
     // 출근 다이얼로그
     val positiveComeBtnClick = { dialogInterface: DialogInterface, i: Int ->
+        val startProgressDialog = Dialog(requireContext())
+        startProgressDialog.setContentView(R.layout.dialog_loading)
+        startProgressDialog.show()
+
         // 해당 스케줄 출근 요청
         RetrofitManager.scheduleService?.scheduleStart(scheduleID1)?.enqueue(object:
             Callback<ScheduleStartResponseData> {

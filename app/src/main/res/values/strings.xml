@@ -30,6 +30,7 @@
 
     <!-- Home -->
     <string name="home_noschedule"> 오늘은 알바 스케줄이 없습니다</string>
+    <string name="home_progressbar">비콘 감지중입니다..</string>
 
     <!-- ProfileRegister -->
     <string name="profileregister_title">프로필 등록</string>
