@@ -1,17 +1,14 @@
 package com.example.coalba
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
-import com.example.coalba.adapter.MessageAdapter
 import com.example.coalba.api.retrofit.RetrofitManager
 import com.example.coalba.data.request.MessageSendData
 import com.example.coalba.data.response.MessagesResponseData
-import com.example.coalba.databinding.ActivityMessageDetailBinding
 import com.example.coalba.databinding.ActivityMessageSendBinding
 import retrofit2.Call
 import retrofit2.Callback

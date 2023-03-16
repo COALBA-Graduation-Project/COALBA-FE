@@ -53,34 +53,45 @@ class HomeFragment : Fragment() {
         startProgressDialog.show()
 
         // 해당 스케줄 출근 요청
-        RetrofitManager.scheduleService?.scheduleStart(scheduleID1)?.enqueue(object:
-            Callback<ScheduleStartResponseData> {
-            override fun onResponse(call: Call<ScheduleStartResponseData>, response: Response<ScheduleStartResponseData>) {
-                if(response.isSuccessful){
-                    Log.d("ScheduleStart", "success")
-                    (requireContext() as MainActivity).detectBeacon()
+        (requireContext() as MainActivity).detectBeacon(
+            object: OnBeaconListener {
+                override fun startSchedule() {
+                    RetrofitManager.scheduleService?.scheduleStart(scheduleID1)?.enqueue(object:
+                        Callback<ScheduleStartResponseData> {
+                        override fun onResponse(call: Call<ScheduleStartResponseData>, response: Response<ScheduleStartResponseData>) {
+                            if(response.isSuccessful){
+                                Log.d("ScheduleStart", "success")
+                                startProgressDialog.dismiss()
 
-                    val data = response.body()
-                    datas[pos1].logicalStartTime = data!!.logicalStartTime
-                    datas[pos1].state = data.status
-                    homescheduleAdapter.notifyDataSetChanged()
-                }else{ // 이곳은 에러 발생할 경우 실행됨
-                    val data1 = response.code()
-                    Log.d("status code", data1.toString())
-                    val data2 = response.headers()
-                    Log.d("header", data2.toString())
-                    Log.d("server err", response.errorBody()?.string().toString())
-                    Log.d("ScheduleStart", "fail")
+                                val data = response.body()
+                                datas[pos1].logicalStartTime = data!!.logicalStartTime
+                                datas[pos1].state = data.status
+                                homescheduleAdapter.notifyDataSetChanged()
+                                (context as MainActivity).runOnUiThread {
+                                    Toast.makeText(requireContext(), "출근되었습니다", Toast.LENGTH_SHORT).show()
+                                }
+                            } else{ // 이곳은 에러 발생할 경우 실행됨
+                                val data1 = response.code()
+                                Log.d("status code", data1.toString())
+                                val data2 = response.headers()
+                                Log.d("header", data2.toString())
+                                Log.d("server err", response.errorBody()?.string().toString())
+                                Log.d("ScheduleStart", "fail")
+                            }
+                        }
+                        override fun onFailure(call: Call<ScheduleStartResponseData>, t: Throwable) {
+                            Log.d("ScheduleStart", "error")
+                        }
+                    })
                 }
             }
-            override fun onFailure(call: Call<ScheduleStartResponseData>, t: Throwable) {
-                Log.d("ScheduleStart", "error")
-            }
-        })
-        Toast.makeText(requireContext(), "출근되었습니다", Toast.LENGTH_SHORT).show()
+        )
     }
     val negativeComeBtnClick = { dialogInterface: DialogInterface, i: Int ->
         Toast.makeText(requireContext(), "취소", Toast.LENGTH_SHORT).show()
+    }
+    interface OnBeaconListener {
+        fun startSchedule()
     }
 
     // 퇴근 다이얼로그

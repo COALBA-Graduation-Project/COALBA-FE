@@ -28,25 +28,6 @@ class MessageDetailActivity : AppCompatActivity() {
     val datas = mutableListOf<MessageData>()
     var storeId : Long = 0
 
-    /*
-    // 쪽지보내기 버튼 클릭 시 MessageSendActivity 화면 시작하고 MessageSendActivity finish 후 결과값 받아와서 처리
-    // 이전 onAcitivityResult 역할과 비슷, 해당 메소드 deprecated 되어서 대신 사용
-    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        when (it.resultCode) {
-            Activity.RESULT_OK -> {
-                val responseData = it.data!!.getParcelableExtra<MessagesResponseData>("responseData")
-                //responseData는 워크스페이스 등록 api 호출 후 응답 데이터
-                Log.d("responseData =", responseData.toString())
-                datas.clear()
-                responseData!!.messageList.forEach { message ->
-                    datas.add(MessageData(message.sendingOrReceiving, message.createDate, message.content))
-                }
-                binding.rvMessage.adapter?.notifyItemRangeChanged(0, responseData.messageList.count())
-                //adapter에게 데이터 변경되었다는 것 알림
-            }
-        }
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 바인딩
@@ -64,7 +45,6 @@ class MessageDetailActivity : AppCompatActivity() {
             val intent = Intent(this, MessageSendActivity::class.java)
             intent.putExtra("workspaceID", storeId)
             startActivity(intent)
-            //startForResult.launch(intent)
         }
     }
     override fun onResume() {
@@ -73,10 +53,7 @@ class MessageDetailActivity : AppCompatActivity() {
         // 해당 워크스페이스 쪽지함 내 메시지 리스트 조회 (최신순)
         RetrofitManager.messageService?.messages(storeId)?.enqueue(object:
             Callback<MessagesResponseData> {
-            override fun onResponse(
-                call: Call<MessagesResponseData>,
-                response: Response<MessagesResponseData>
-            ) {
+            override fun onResponse(call: Call<MessagesResponseData>, response: Response<MessagesResponseData>) {
                 if(response.isSuccessful){
                     Log.d("Messages", "success")
                     val data2 = response.body()

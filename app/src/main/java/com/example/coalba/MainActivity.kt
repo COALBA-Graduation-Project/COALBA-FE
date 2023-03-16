@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.coalba.databinding.ActivityMainBinding
+import com.example.coalba.fragment.HomeFragment
 import org.altbeacon.beacon.*
 
 class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
 
     //===== beacon 코드 시작 =====
     private var beaconManager: BeaconManager? = null
+    private var beaconListener: HomeFragment.OnBeaconListener? = null
     //===== beacon 코드 끝 =====
 
     //===== 권한 요청용 변수 시작 =====
@@ -117,7 +119,9 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
         //===== beacon 코드 끝 =====
     }
 
-    fun detectBeacon() {
+    fun detectBeacon(beaconListener: HomeFragment.OnBeaconListener) {
+        this.beaconListener = beaconListener
+
         bluetoothAdapter?.let {
             if (!it.isEnabled) { //블루투스 비활성화 상태
                 val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
@@ -140,24 +144,18 @@ class MainActivity : AppCompatActivity(), InternalBeaconConsumer {
         beaconManager!!.removeAllMonitorNotifiers()
         //비콘 모니터 관련 notifier 등록
         beaconManager!!.addMonitorNotifier(object : MonitorNotifier {
-            /**
-             * Beacon 1개 이상 감지O: didDetermineStateForRegion(INSIDE) → didEnterRegion 호출
-             * Beacon 하나도 감지X: didDetermineStateForRegion(OUTSIDE) → didExitRegion 호출
-             */
-            override fun didEnterRegion(p0: Region?) {
-                //beacon 감지O
-                beaconManager!!.unbindInternal(this@MainActivity)
-            }
+            //beacon 감지O
+            override fun didEnterRegion(p0: Region?) { }
 
-            override fun didExitRegion(p0: Region?) {
-                //beacon 감지X
-                beaconManager!!.unbindInternal(this@MainActivity)
-            }
+            //beacon 감지X
+            override fun didExitRegion(p0: Region?) { }
 
             override fun didDetermineStateForRegion(p0: Int, p1: Region?) {
                 //beacon 감지O
                 if (p0 == MonitorNotifier.INSIDE) {
                     //Beacon 감지 시, 스케줄 시작 API 요청
+                    beaconManager!!.unbindInternal(this@MainActivity) //Beacon 감지 중단
+                    beaconListener!!.startSchedule()
                 }
                 //beacon 감지X
                 else { }
