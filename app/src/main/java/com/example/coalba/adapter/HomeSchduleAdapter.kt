@@ -28,6 +28,8 @@ class HomeSchduleAdapter(private val context: Context, private val startClickLis
             with(binding){
                 if (item.logicalStartTime == null){
                     tvHomeScheduleStarttime.text = item.starttime // 출근 전일 때에는 스케줄 시작 시간
+                    tvHomeScheduleStarttime.setTextColor(ContextCompat.getColor(context,R.color.black))
+                    comeBtn.setBackgroundResource(R.drawable.bg_basicbtn)
                 }else{
                     tvHomeScheduleStarttime.text = item.logicalStartTime
                     // 이미 출근했을 때는 출근 버튼 비활성화
@@ -37,6 +39,8 @@ class HomeSchduleAdapter(private val context: Context, private val startClickLis
                 }
                 if (item.logicalEndTime == null){
                     tvHomeScheduleEndtime.text = item.endtime // 퇴근 전일 때에는 스케줄 종료 시간
+                    tvHomeScheduleEndtime.setTextColor(ContextCompat.getColor(context,R.color.black))
+                    leaveBtn.setBackgroundResource(R.drawable.bg_basicbtn)
                 }else{
                     tvHomeScheduleEndtime.text = item.logicalEndTime
                     // 이미 퇴근했을 때는 퇴근 버튼 비활성화
