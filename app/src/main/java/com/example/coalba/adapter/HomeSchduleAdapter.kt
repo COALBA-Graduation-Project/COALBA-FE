@@ -49,7 +49,7 @@ class HomeSchduleAdapter(private val context: Context, private val startClickLis
                     "BEFORE_WORK" -> { tvHomeScheduleState.text = "근무전" }
                     "ON_DUTY" -> { tvHomeScheduleState.text = "근무중" }
                     "LATE" -> { tvHomeScheduleState.text = "지각" }
-                    "SUCCESS " -> { tvHomeScheduleState.text = "근무 완료" }
+                    "SUCCESS" -> { tvHomeScheduleState.text = "근무 완료" }
                     "FAIL" -> { tvHomeScheduleState.text = "근무 실패" }
                 }
 
