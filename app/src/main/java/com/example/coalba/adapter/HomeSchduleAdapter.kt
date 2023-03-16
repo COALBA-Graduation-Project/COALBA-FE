@@ -54,11 +54,14 @@ class HomeSchduleAdapter(private val context: Context, private val startClickLis
                 }
 
                 btnHomeScheduleCome.setOnClickListener {
-                    // (context as MainActivity).detectBeacon()
-                    startClickListener.click1(datas[position].scheduleId, position)
+                    if (item.logicalStartTime == null){
+                        startClickListener.click1(datas[position].scheduleId, position)
+                    }
                 }
                 btnHomeScheduleLeave.setOnClickListener {
-                    endClickListener.click2(datas[position].scheduleId, position)
+                    if (item.logicalEndTime == null){
+                        endClickListener.click2(datas[position].scheduleId, position)
+                    }
                 }
             }
         }
