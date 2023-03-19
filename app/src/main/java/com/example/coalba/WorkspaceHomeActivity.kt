@@ -92,9 +92,9 @@ class WorkspaceHomeActivity : AppCompatActivity() {
         }
     }
 
-    fun dayClick(day: String){
+    fun dayClick(year: Int, month: Int, day: Int){
         // 해당 워크스페이스 홈 해당 날짜 스케줄 조회 서버 연동
-        RetrofitManager.scheduleService?.scheduleEachWorkspaceSchedule(storeId, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, day.toInt())?.enqueue(object:
+        RetrofitManager.scheduleService?.scheduleEachWorkspaceSchedule(storeId, year, month, day)?.enqueue(object:
             Callback<ScheduleEachWorkspaceScheduleResponseData> {
             override fun onResponse(
                 call: Call<ScheduleEachWorkspaceScheduleResponseData>,

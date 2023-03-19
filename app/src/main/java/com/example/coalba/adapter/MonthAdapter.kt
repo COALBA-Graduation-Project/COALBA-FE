@@ -30,7 +30,8 @@ class MonthAdapter:RecyclerView.Adapter<MonthAdapter.MonthView>() {
         calendar.add(Calendar.MONTH, position-center)
         // layout에 있는 것을 가져오지 못할 때는 build.gradle->plugins안에 id 'kotlin-android-extensions' 넣고 clean project하기
         holder.layout.tv_month.text = "${calendar.get(Calendar.YEAR)}년 ${calendar.get(Calendar.MONTH)+1}월"
-        // 현재 월을 저장
+        // 현재 년월을 저장
+        val tempYear = calendar.get(Calendar.YEAR)
         val tempMonth = calendar.get(Calendar.MONTH)
 
         // 위에서 보여주고자 하는 월을 구했다면 이제 그 월에서 보여줄 일들을 구하여 Grid 타입의 RecyclerView를 사용하여 각 날짜를 보여줌
@@ -44,7 +45,7 @@ class MonthAdapter:RecyclerView.Adapter<MonthAdapter.MonthView>() {
             calendar.add(Calendar.WEEK_OF_MONTH,1)
         }
         val dayListManager = GridLayoutManager(holder.layout.context,7)
-        val dayListAdapter = DayAdapter(tempMonth, dayList)
+        val dayListAdapter = DayAdapter(tempYear, tempMonth, dayList)
         holder.layout.rv_month.apply {
             layoutManager = dayListManager
             adapter = dayListAdapter
