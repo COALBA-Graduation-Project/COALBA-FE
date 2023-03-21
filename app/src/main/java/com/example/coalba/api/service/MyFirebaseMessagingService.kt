@@ -41,7 +41,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val notification = builder.setContentTitle(title)
             .setContentText(body)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.logo)
             .build()
         notificationManager.notify(1, notification) //알림 표시
         //첫번째 인자로는 0을 제외한 정수, 각 알림 식별 → 이 경우 생성되는 알림의 아이디 값이 모두 같기 때문에 알림이 쌓이지 않고 변경 내용만 반영됨
